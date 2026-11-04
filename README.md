@@ -1,2 +1,2 @@
 # delivery-risk-intelligence
-Capstone assignments 
+A predictive analytics project for identifying and preventing late e-commerce deliveries using the Olist dataset.

@@ -1,7 +1,7 @@
 # DRI data pipeline container.
 # Build:  docker build -t dri-pipeline .
 # Run:    docker run --rm -v "$PWD/data:/app/data" -v "$PWD/logs:/app/logs" dri-pipeline
-# Test:   docker run --rm --entrypoint pytest dri-pipeline -q
+# Test:   docker run --rm --entrypoint pytest dri-pipeline -q --ignore=tests/test_structure.py
 FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

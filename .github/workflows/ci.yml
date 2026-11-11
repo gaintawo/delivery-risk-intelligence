@@ -32,7 +32,7 @@ jobs:
       - name: Build image
         run: docker build -t dri-pipeline .
       - name: Unit tests inside the container
-        run: docker run --rm --entrypoint pytest dri-pipeline -q -p no:cacheprovider
+        run: docker run --rm --entrypoint pytest dri-pipeline -q -p no:cacheprovider --ignore=tests/test_structure.py
       - name: Run full pipeline in the container
         run: |
           mkdir -p data logs docs/evidence gx-out

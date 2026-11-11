@@ -11,7 +11,7 @@ import hashlib
 import json
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from . import config
@@ -49,7 +49,7 @@ def audit(action: str, dataset: str, *, purpose: str, rows: int | None = None,
     action: read | write | transform | pii_remove | pii_pseudonymise | validate | bias_check
     """
     event = {
-        "ts": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "ts": datetime.now(UTC).isoformat(timespec="seconds"),
         "run_id": RUN_ID,
         "actor": config.ACTOR,
         "action": action,

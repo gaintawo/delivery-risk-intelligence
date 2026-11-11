@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pandas as pd
 from prefect import flow, get_run_logger, task
@@ -137,7 +137,7 @@ def dri_etl() -> dict:
     flags = bias_task(ready)
     outputs = load_task(ready)
 
-    lineage = {"run_id": RUN_ID, "finished": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    lineage = {"run_id": RUN_ID, "finished": datetime.now(UTC).isoformat(timespec="seconds"),
                "stages": LINEAGE}
     (config.EVIDENCE_DIR / "lineage.json").write_text(json.dumps(lineage, indent=2, default=str))
     audit("run_end", "pipeline", purpose="Finish DRI ETL run", rows=outputs["rows"])

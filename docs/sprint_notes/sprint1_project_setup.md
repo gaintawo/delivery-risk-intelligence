@@ -1,4 +1,4 @@
-# Sprint S0 (Module 2) - Review and retrospective
+# Sprint 1 – Project Setup (Module 2): review and retrospective
 
 **Sprint goal:** plan and set up. **Increment:** repository, board, data dictionary, RAID log, architecture.
 
@@ -11,5 +11,5 @@
 | --- | --- | --- |
 | Tracing every ticket to a Module 1 goal or FR | - | _fill in after the sprint_ |
 
-## Backlog changes for S1
+## Backlog changes for Sprint 2
 - _Record any re-ordering here (see report Section 4, "Adaptation")._

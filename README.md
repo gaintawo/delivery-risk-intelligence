@@ -8,7 +8,7 @@ BAN6800 Business Analytics Capstone · Nexford University · Gain Tawodzera
 | --- | --- |
 | Vertical | Logistics, last-mile delivery |
 | Dataset | [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (CC BY-NC-SA 4.0) |
-| Status | Sprint S0 (Module 2: planning) |
+| Status | Sprint 1 – Project Setup complete (Module 2) |
 
 ## Repository structure (from the Module 1 Vision Document)
 

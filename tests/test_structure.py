@@ -1,4 +1,4 @@
-"""Sprint S0 checks: the repository matches the Module 1 structure and the
+"""Sprint 1 checks: the repository matches the Module 1 structure and the
 data dictionary keeps outcome columns out of the feature set (FR2)."""
 from pathlib import Path
 

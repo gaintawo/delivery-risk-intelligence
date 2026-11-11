@@ -3,7 +3,7 @@
 All notable changes to Delivery Risk Intelligence (DRI) are documented in this file.
 Versions follow semantic versioning (Module 1, Section 6).
 
-## [0.2.0] - November 2026 (Module 2, Sprint S0)
+## [0.2.0] - November 2026 (Module 2, Sprint 1 – Project Setup)
 
 ### Added
 - Full Module 1 directory structure: `notebooks/`, `src/` (pipeline, features, models, fairness, actions), `api/`, `dashboard/`, `tests/`.
@@ -11,7 +11,7 @@ Versions follow semantic versioning (Module 1, Section 6).
 - GitHub Actions CI running `ruff` and `pytest` on every push and pull request.
 - Sprint backlog of 32 tickets (`docs/backlog.csv`), each linked to one of the 11 Project board issues.
 - Technical RAID log as a spreadsheet (`docs/raid_log.xlsx`) alongside `docs/RAID_LOG.md`.
-- Sprint S0 review and retrospective (`docs/sprint_notes/`).
+- Sprint 1 review and retrospective (`docs/sprint_notes/`).
 
 ### Changed
 - Data dictionary extended to all nine Olist tables, with an availability tag per column to prevent leakage.

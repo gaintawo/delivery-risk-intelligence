@@ -1,7 +1,7 @@
 # Delivery Risk Intelligence (DRI)
 ## Preliminary Data Dictionary
 
-Version 0.2 · Module 2 (Sprint S0) · Source: Olist (2018), *Brazilian E-Commerce Public Dataset by Olist*, Kaggle, CC BY-NC-SA 4.0.
+Version 0.2 · Module 2 (Sprint 1 – Project Setup) · Source: Olist (2018), *Brazilian E-Commerce Public Dataset by Olist*, Kaggle, CC BY-NC-SA 4.0.
 
 ## 1. Overview
 
@@ -155,7 +155,7 @@ These fields will be created during data preparation in `src/features/`.
 
 ## 5. Row counts
 
-Row counts are the published dataset sizes. They will be confirmed, and data types corrected, when the data is loaded in Module 3 (Sprint S1).
+Row counts are the published dataset sizes. They will be confirmed, and data types corrected, when the data is loaded in Sprint 2 – Data Understanding (Module 3).
 
 ## 6. Data Quality Considerations
 

@@ -1,0 +1,13 @@
+# Exact versions for the Module 3 data pipeline (tested 2026-11-11, Python 3.13).
+# Used by the Dockerfile and CI so every run is reproducible.
+pandas==3.0.5
+numpy==2.5.3
+pyarrow==26.0.1
+sqlalchemy==2.1.8
+python-dotenv==1.2.3
+prefect==3.9.2
+great_expectations==1.24.1
+fairlearn==0.15.0
+scikit-learn==1.9.1
+faker==40.54.0
+pytest==9.1.1

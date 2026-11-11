@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "a79ca143-fa74-478c-98fe-1b44805873dd",
+      "name": "orders_model_ready"
+    },
+    "batch_definition": {
+      "id": "1323b435-4b45-4aea-bcdb-816635aa640e",
+      "name": "whole_table"
+    },
+    "datasource": {
+      "id": "6573e2ea-4c9e-44a8-9164-74f872b2de17",
+      "name": "dri_pandas"
+    }
+  },
+  "id": "611a865f-c7b3-4b4a-9ad5-8660e00388e1",
+  "name": "orders_model_ready_validation",
+  "suite": {
+    "id": "d8229612-4259-4d47-a00e-22bf17a7a718",
+    "name": "orders_model_ready_suite"
+  }
+}

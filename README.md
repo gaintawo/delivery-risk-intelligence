@@ -8,7 +8,7 @@ BAN6800 Business Analytics Capstone · Nexford University · Gain Tawodzera
 | --- | --- |
 | Vertical | Logistics, last-mile delivery |
 | Dataset | [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (CC BY-NC-SA 4.0) |
-| Status | Sprint 1 – Project Setup complete (Module 2) |
+| Status | Sprints 2–3 (Module 3): data pipeline built and validated |
 
 ## Repository structure (from the Module 1 Vision Document)
 
@@ -43,6 +43,24 @@ pip install -r requirements.txt
 cp .env.example .env        # add your own values; .env is never committed
 pytest -q
 ```
+
+## Run the data pipeline (Module 3)
+
+```bash
+pip install -r requirements-pipeline.txt
+python -m src.pipeline.flow     # downloads the Olist data if missing, then runs all 9 stages
+pytest -q                       # 21 unit tests
+```
+
+Or in Docker: `docker build -t dri-pipeline . && docker run --rm -v "$PWD/data:/app/data" dri-pipeline`.
+GitHub Actions builds the container and runs the full pipeline on every push.
+
+| Document | What it covers |
+| --- | --- |
+| [Pipeline](docs/pipeline.md) | Stages, data-quality decisions, outputs, lineage |
+| [Data anonymization plan](docs/data_anonymization_plan.md) | PII inventory and how each field is removed or pseudonymised |
+| [Data governance framework](docs/data_governance.md) | Access control, retention, audit logging, change control |
+| [Evidence](docs/evidence/) | Prefect run graph, Great Expectations results, bias report, audit log sample |
 
 ## Planning documents (Module 2)
 

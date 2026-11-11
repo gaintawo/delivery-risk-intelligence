@@ -1,0 +1,100 @@
+{
+  "expectations": [
+    {
+      "id": "bce387de-a0b8-4bf4-aa9a-46efd97fd261",
+      "kwargs": {
+        "min_value": 5000
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_table_row_count_to_be_between"
+    },
+    {
+      "id": "65d8827c-e9cd-4cb2-80e3-60945ca8eca5",
+      "kwargs": {
+        "column": "order_id"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_be_unique"
+    },
+    {
+      "id": "1121ecea-c66c-4d1f-bb38-d47916765b2f",
+      "kwargs": {
+        "column": "order_id"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "c7704b57-f34c-467b-afdb-38b1534cb795",
+      "kwargs": {
+        "column": "order_purchase_timestamp"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "6929d3c3-cf71-4010-889d-da2866e9a66d",
+      "kwargs": {
+        "column": "order_estimated_delivery_date"
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "cb807b7b-ab71-4946-a0ea-9a676e112f72",
+      "kwargs": {
+        "column": "order_status",
+        "value_set": [
+          "delivered",
+          "shipped",
+          "canceled",
+          "unavailable",
+          "invoiced",
+          "processing",
+          "created",
+          "approved"
+        ]
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_values_to_be_in_set"
+    },
+    {
+      "id": "bc96252f-dc8c-42f8-aedb-d9a6c40c1029",
+      "kwargs": {
+        "column_A": "order_approved_at",
+        "column_B": "order_purchase_timestamp",
+        "ignore_row_if": "either_value_is_missing",
+        "mostly": 0.99,
+        "or_equal": true
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    },
+    {
+      "id": "a782ef4b-6560-42ce-8d2e-9c83eb82222c",
+      "kwargs": {
+        "column_A": "order_delivered_customer_date",
+        "column_B": "order_delivered_carrier_date",
+        "ignore_row_if": "either_value_is_missing",
+        "mostly": 0.99,
+        "or_equal": true
+      },
+      "meta": {},
+      "severity": "critical",
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    }
+  ],
+  "id": "ec7df814-f164-4e17-8f15-443f22b31fb4",
+  "meta": {
+    "great_expectations_version": "1.24.1"
+  },
+  "name": "raw_orders_suite",
+  "notes": null
+}

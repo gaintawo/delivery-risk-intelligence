@@ -1,0 +1,268 @@
+{
+  "run_id": "f041f56747f4",
+  "finished": "2026-11-11T19:39:34+00:00",
+  "stages": [
+    {
+      "stage": "acquire",
+      "inputs": [
+        "https://raw.githubusercontent.com/olist/work-at-olist-data/master/datasets"
+      ],
+      "output": "data/raw/*.csv",
+      "rows_out": 9,
+      "cols_out": 0,
+      "seconds": 0.0,
+      "downloaded": []
+    },
+    {
+      "stage": "ingest",
+      "inputs": [
+        "olist_orders_dataset.csv",
+        "olist_order_items_dataset.csv",
+        "olist_order_payments_dataset.csv",
+        "olist_order_reviews_dataset.csv",
+        "olist_customers_dataset.csv",
+        "olist_sellers_dataset.csv",
+        "olist_products_dataset.csv",
+        "olist_geolocation_dataset.csv",
+        "product_category_name_translation.csv"
+      ],
+      "output": "9 typed DataFrames",
+      "rows_out": 1550922,
+      "cols_out": 0,
+      "seconds": 1.57,
+      "tables": {
+        "orders": 99441,
+        "items": 112650,
+        "payments": 103886,
+        "reviews": 99224,
+        "customers": 99441,
+        "sellers": 3095,
+        "products": 32951,
+        "geolocation": 1000163,
+        "category_translation": 71
+      }
+    },
+    {
+      "stage": "clean",
+      "inputs": [
+        "orders",
+        "items",
+        "payments",
+        "reviews",
+        "customers",
+        "sellers",
+        "products",
+        "geolocation",
+        "category_translation"
+      ],
+      "output": "8 clean tables",
+      "rows_out": 569144,
+      "cols_out": 0,
+      "seconds": 2.26,
+      "reports": {
+        "orders": {
+          "rows_in": 99441,
+          "duplicate_order_ids": 0,
+          "ts_anomaly": 1382,
+          "delivered_missing_date": 8,
+          "rows_out": 99441
+        },
+        "items": {
+          "rows_in": 112650,
+          "invalid_price_or_freight": 0,
+          "rows_out": 112650
+        },
+        "payments": {
+          "rows_in": 103886,
+          "not_defined_type": 3,
+          "rows_out": 103883
+        },
+        "reviews": {
+          "rows_in": 99224,
+          "pii_columns_dropped": [
+            "review_comment_title",
+            "review_comment_message"
+          ],
+          "extra_reviews_per_order": 551,
+          "rows_out": 98673
+        },
+        "customers": {
+          "rows_in": 99441,
+          "pii_columns_dropped": [
+            "customer_city"
+          ],
+          "unknown_state": 0,
+          "rows_out": 99441
+        },
+        "sellers": {
+          "rows_in": 3095,
+          "pii_columns_dropped": [
+            "seller_city"
+          ],
+          "rows_out": 3095
+        },
+        "geolocation": {
+          "rows_in": 1000163,
+          "pii_columns_dropped": [
+            "geolocation_city"
+          ],
+          "rows_after_dedupe": 720156,
+          "outside_brazil": 33,
+          "rows_out": 19010
+        },
+        "products": {
+          "rows_in": 32951,
+          "missing_category": 610,
+          "size_imputed": 6,
+          "rows_out": 32951
+        }
+      }
+    },
+    {
+      "stage": "integrate",
+      "inputs": [
+        "orders",
+        "items",
+        "payments",
+        "reviews",
+        "customers",
+        "sellers",
+        "geolocation",
+        "products"
+      ],
+      "output": "orders_integrated",
+      "rows_out": 99441,
+      "cols_out": 34,
+      "seconds": 0.39,
+      "report": {
+        "orders_without_items": 775,
+        "orders_without_payment": 4,
+        "customer_geo_fallback": 280,
+        "seller_geo_fallback": 992,
+        "rows_out": 99441
+      }
+    },
+    {
+      "stage": "transform",
+      "inputs": [
+        "orders_integrated"
+      ],
+      "output": "orders_features",
+      "rows_out": 99441,
+      "cols_out": 54,
+      "seconds": 0.57,
+      "late_rate": 0.0811,
+      "delivered": 96470
+    },
+    {
+      "stage": "anonymise",
+      "inputs": [
+        "orders_features"
+      ],
+      "output": "orders_model_ready",
+      "rows_out": 99441,
+      "cols_out": 41,
+      "seconds": 0.24,
+      "columns_removed": [
+        "order_id",
+        "customer_id",
+        "order_approved_at",
+        "order_delivered_carrier_date",
+        "order_delivered_customer_date",
+        "order_estimated_delivery_date",
+        "customer_unique_id",
+        "customer_zip_code_prefix",
+        "shipping_limit_date",
+        "seller_id",
+        "seller_zip_code_prefix",
+        "payment_value_total",
+        "customer_lat",
+        "customer_lng",
+        "seller_lat",
+        "seller_lng"
+      ],
+      "k_anonymity_state_month": {
+        "quasi_identifiers": [
+          "customer_state",
+          "purchase_month"
+        ],
+        "k_min": 2,
+        "groups": 322,
+        "groups_below_5": 14,
+        "rows_in_groups_below_5": 45
+      }
+    },
+    {
+      "stage": "validate",
+      "inputs": [
+        "raw_orders",
+        "raw_order_items",
+        "orders_model_ready"
+      ],
+      "output": "gx data docs",
+      "rows_out": 99441,
+      "cols_out": 41,
+      "seconds": 1.97,
+      "results": {
+        "raw_orders": {
+          "success": true,
+          "evaluated": 8,
+          "passed": 8,
+          "failed": []
+        },
+        "raw_order_items": {
+          "success": true,
+          "evaluated": 5,
+          "passed": 5,
+          "failed": []
+        },
+        "orders_model_ready": {
+          "success": true,
+          "evaluated": 22,
+          "passed": 22,
+          "failed": []
+        },
+        "data_docs": "gx/uncommitted/data_docs/local_site/index.html"
+      }
+    },
+    {
+      "stage": "bias_check",
+      "inputs": [
+        "orders_model_ready"
+      ],
+      "output": "docs/evidence/bias_*.csv",
+      "rows_out": 99441,
+      "cols_out": 41,
+      "seconds": 0.98,
+      "flags": {
+        "under_represented_regions": [
+          "North",
+          "Northeast",
+          "Central-West"
+        ],
+        "small_sample_regions": [],
+        "late_rate_gap_regions_pts": 7.3,
+        "late_rate_gap_seller_size_pts": 1.1
+      }
+    },
+    {
+      "stage": "load",
+      "inputs": [
+        "orders_model_ready"
+      ],
+      "output": "parquet + warehouse table/view + dashboard_feed.csv",
+      "rows_out": 99441,
+      "cols_out": 41,
+      "seconds": 2.21,
+      "parquet": "data/processed/orders_model_ready.parquet",
+      "rows": 99441,
+      "training_view_rows": 96470,
+      "dashboard_feed": {
+        "cells": 4385,
+        "cells_suppressed": 2097,
+        "orders_in_suppressed_cells": 4150,
+        "share_of_orders_suppressed": 0.0417
+      }
+    }
+  ]
+}

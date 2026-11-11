@@ -3,6 +3,21 @@
 All notable changes to Delivery Risk Intelligence (DRI) are documented in this file.
 Versions follow semantic versioning (Module 1, Section 6).
 
+## [0.3.0] - November 2026 (Module 3, Sprints 2–3)
+
+### Added
+- Data pipeline as a Prefect flow (`src/pipeline/flow.py`) with 9 stages: acquire, ingest, clean, integrate, transform, anonymise, validate, bias check, load.
+- Great Expectations: 3 suites, 35 expectations; the model-ready suite is a hard gate (`src/pipeline/validate.py`, `gx/`).
+- Representation-bias checks with Fairlearn (`src/fairness/bias.py`).
+- Pseudonymisation and PII removal (`src/pipeline/anonymize.py`); privacy audit log (`src/pipeline/audit.py`).
+- Leakage-safe features with point-in-time seller history (`src/features/build.py`).
+- 21 unit tests using Faker-generated data; `Dockerfile`, `requirements-pipeline.txt` with exact versions.
+- CI now builds the container and runs the full pipeline on the Olist data.
+- `docs/pipeline.md`, `docs/data_anonymization_plan.md`, `docs/data_governance.md`, `docs/evidence/`.
+
+### Changed
+- Data dictionary: added the model-ready output schema (section 9).
+
 ## [0.2.0] - November 2026 (Module 2, Sprint 1 – Project Setup)
 
 ### Added

@@ -3,17 +3,53 @@ on:
   push:
     branches: [main, develop]
   pull_request:
+  workflow_dispatch:
+
 jobs:
   test:
+    name: Lint and unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install test tools
-        run: pip install pytest ruff
+          python-version: "3.13"
+      - name: Install
+        run: pip install -r requirements-pipeline.txt ruff
       - name: Lint
         run: ruff check src tests
-      - name: Test
+      - name: Unit tests
+        env:
+          GX_ANALYTICS_ENABLED: "false"
         run: pytest -q
+
+  pipeline-docker:
+    name: Build container and run pipeline on Olist data
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t dri-pipeline .
+      - name: Unit tests inside the container
+        run: docker run --rm --entrypoint pytest dri-pipeline -q -p no:cacheprovider
+      - name: Run full pipeline in the container
+        run: |
+          mkdir -p data logs docs/evidence gx-out
+          chmod -R 777 data logs docs/evidence gx-out
+          docker run --rm \
+            -v "$PWD/data:/app/data" -v "$PWD/logs:/app/logs" \
+            -v "$PWD/docs/evidence:/app/docs/evidence" -v "$PWD/gx-out:/app/gx/uncommitted" \
+            -e DRI_HASH_SALT="${{ secrets.DRI_HASH_SALT || 'ci-only-salt' }}" \
+            dri-pipeline
+          ls -la data/processed docs/evidence
+          tail -n 3 logs/audit.log
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-evidence
+          path: |
+            docs/evidence
+            logs/audit.log
+            gx-out/data_docs
+            data/processed/dashboard_feed.csv

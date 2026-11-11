@@ -1,0 +1,6 @@
+customer_region,delivered_orders,late_rate,orders,order_share,label_coverage,late_rate_diff_vs_overall,small_sample,population_share,representation_ratio,under_represented
+North,1796.0,0.098,1851,0.0186,0.9703,0.0169,False,0.085,0.219,True
+Northeast,9044.0,0.1433,9394,0.0945,0.9627,0.0622,False,0.269,0.3512,True
+Central-West,5624.0,0.0797,5782,0.0581,0.9727,-0.0015,False,0.08,0.7268,True
+South,13813.0,0.0705,14148,0.1423,0.9763,-0.0106,False,0.147,0.9679,False
+Southeast,66193.0,0.0745,68266,0.6865,0.9696,-0.0066,False,0.418,1.6423,False

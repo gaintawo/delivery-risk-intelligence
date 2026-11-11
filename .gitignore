@@ -24,3 +24,7 @@ dbt_packages/
 target/
 logs/
 .DS_Store
+
+# Pipeline working files
+data/interim/*
+*.db

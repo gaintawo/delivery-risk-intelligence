@@ -1,7 +1,5 @@
 # Raw Data
 
-Stores the original Olist Brazilian E-Commerce dataset.
+The nine original Olist files (Olist, 2018; CC BY-NC-SA 4.0). They are never edited and never committed to Git.
 
-Original datasets must remain unchanged.
-
-Dataset versions will be managed using DVC.
+Run `python -m src.pipeline.flow`: the first stage downloads any missing file from Olist's public copy and records each file's SHA-256 fingerprint in `logs/audit.log`.

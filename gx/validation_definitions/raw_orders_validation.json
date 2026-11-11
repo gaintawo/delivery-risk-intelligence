@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "891f6094-438e-4636-b915-9d4205a3555d",
+      "name": "raw_orders"
+    },
+    "batch_definition": {
+      "id": "66cf9902-3524-4a2a-8d50-2c3b8f48384e",
+      "name": "whole_table"
+    },
+    "datasource": {
+      "id": "6573e2ea-4c9e-44a8-9164-74f872b2de17",
+      "name": "dri_pandas"
+    }
+  },
+  "id": "151b5208-f23d-46be-940d-e2141b0109ac",
+  "name": "raw_orders_validation",
+  "suite": {
+    "id": "ec7df814-f164-4e17-8f15-443f22b31fb4",
+    "name": "raw_orders_suite"
+  }
+}

@@ -1,0 +1,4 @@
+seller_size,delivered_orders,late_rate,orders,order_share,label_coverage,late_rate_diff_vs_overall,small_sample
+large,65244.0,0.0833,66365,0.6726,0.9831,0.0022,False
+new,5273.0,0.0719,5622,0.057,0.9379,-0.0092,False
+small,25953.0,0.0775,26679,0.2704,0.9728,-0.0036,False

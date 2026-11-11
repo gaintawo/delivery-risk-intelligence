@@ -5,16 +5,16 @@ DRI-03,#2,Write preliminary data dictionary with P/H/O availability tags,Sprint 
 DRI-04,#2,Create technical RAID log,Sprint 1,Sprint 1 – Project Setup,docs,Module 1 risks,RAID log,"Risks, assumptions, issues and dependencies each have owner and response",Done
 DRI-05,#2,Draw system architecture diagram,Sprint 1,Sprint 1 – Project Setup,docs,Module 1 tech stack,Architecture diagram,Every component maps to a repo folder,Done
 DRI-06,#2,Set up GitHub Project board with issues for each deliverable,Sprint 1,Sprint 1 – Project Setup,infra,Agile plan,Project board,Board shows issues #1-#11; every DRI ticket links to one issue,Done
-DRI-07,#3,Download Olist data to data/raw and track with DVC,Sprint 2,Sprint 2 – Data Understanding,data,FR1,Raw data,dvc status clean; raw files never edited,Todo
-DRI-08,#5,Provision PostgreSQL and Cloud Storage bucket,Sprint 3,Sprint 3 – Data Preparation,infra,FR1,Storage,Connection works from .env; no secrets committed,Todo
-DRI-09,#5,Build Prefect ingest flow for all 9 tables,Sprint 3,Sprint 3 – Data Preparation,data,FR1,Pipeline,Flow loads all tables into staging; row counts logged,Todo
-DRI-10,#5,"Write Great Expectations suite (nulls, date order, keys)",Sprint 3,Sprint 3 – Data Preparation,data,FR1;I1,Data quality,Suite runs in flow; failed check stops model update,Todo
-DRI-11,#5,Build dbt staging models and order-level mart,Sprint 3,Sprint 3 – Data Preparation,data,FR1,Order mart,One row per order; joins tested,Todo
-DRI-12,#6,Tag feature columns P/H/O and add leakage test,Sprint 3,Sprint 3 – Data Preparation,data,FR2;R1,Leakage register,Test fails if an O or X column reaches src/features,Todo
+DRI-07,#3,Download Olist data to data/raw with SHA-256 audit (DVC deferred),Sprint 2,Sprint 2 – Data Understanding,data,FR1,Raw data,dvc status clean; raw files never edited,Done
+DRI-08,#5,"Warehouse: SQLite by default, PostgreSQL via DATABASE_URL",Sprint 3,Sprint 3 – Data Preparation,infra,FR1,Storage,Connection works from .env; no secrets committed,In Review
+DRI-09,#5,Build Prefect ingest flow for all 9 tables,Sprint 3,Sprint 3 – Data Preparation,data,FR1,Pipeline,Flow loads all tables into staging; row counts logged,Done
+DRI-10,#5,"Write Great Expectations suite (nulls, date order, keys)",Sprint 3,Sprint 3 – Data Preparation,data,FR1;I1,Data quality,Suite runs in flow; failed check stops model update,Done
+DRI-11,#5,Build dbt staging models and order-level mart,Sprint 3,Sprint 3 – Data Preparation,data,FR1,Order mart,One row per order; joins tested,Done
+DRI-12,#6,Tag feature columns P/H/O and add leakage test,Sprint 3,Sprint 3 – Data Preparation,data,FR2;R1,Leakage register,Test fails if an O or X column reaches src/features,Done
 DRI-13,#4,"EDA: late rate by delay leg, region and month",Sprint 2,Sprint 2 – Data Understanding,data,G2;G3,EDA notebook,Notebook 01_explore.ipynb with written summary,Todo
 DRI-14,#4,Publish baseline KPI report for G1-G5,Sprint 2,Sprint 2 – Data Understanding,docs,G1-G5,Baseline KPIs,Baseline value recorded for every Module 1 goal,Todo
-DRI-15,#5,Review Board gate 1: data fair and legal to use,Sprint 3,Sprint 3 – Data Preparation,fairness,ER7;D4,Gate 1,DPO sign-off recorded in docs/,Todo
-DRI-16,#6,"Engineer seller, distance, size, payment and calendar features",Sprint 3,Sprint 3 – Data Preparation,model,FR3,Features,Point-in-time seller history; features documented,Todo
+DRI-15,#5,Review Board gate 1: data fair and legal to use,Sprint 3,Sprint 3 – Data Preparation,fairness,ER7;D4,Gate 1,DPO sign-off recorded in docs/,In Review
+DRI-16,#6,"Engineer seller, distance, size, payment and calendar features",Sprint 3,Sprint 3 – Data Preparation,model,FR3,Features,Point-in-time seller history; features documented,Done
 DRI-17,#7,Create time-based train/validation/test split,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR2,Validation design,No test order earlier than any training order,Todo
 DRI-18,#7,Train logistic regression baseline with MLflow tracking,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR3,Baseline model,Run logged with PR-AUC and recall at capacity,Todo
 DRI-19,#7,Train and tune XGBoost classifier with class weighting,Sprint 4,Sprint 4 – Modelling and Evaluation,model,G1,Classifier,Recall on late orders at least 70% at daily capacity,Todo

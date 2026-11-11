@@ -1,0 +1,13 @@
+.git
+.github
+data
+logs
+gx/uncommitted
+gx/expectations
+gx/checkpoints
+gx/validation_definitions
+docs
+notebooks
+**/__pycache__
+.env
+*.db

@@ -1,0 +1,10 @@
+{
+  "under_represented_regions": [
+    "North",
+    "Northeast",
+    "Central-West"
+  ],
+  "small_sample_regions": [],
+  "late_rate_gap_regions_pts": 7.3,
+  "late_rate_gap_seller_size_pts": 1.1
+}

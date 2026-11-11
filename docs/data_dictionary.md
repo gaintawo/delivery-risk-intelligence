@@ -177,3 +177,52 @@ Customer identifiers will be used only where necessary for joining or validating
 ## 8. Implementation Status
 
 This is a preliminary data dictionary based on the published Olist dataset schema. Field availability, data types, missing values and derived calculations will be verified during data exploration in Module 3.
+
+## 9. Model-ready output (Module 3)
+
+`data/processed/orders_model_ready.parquet`: 99,441 rows (one per order), 41 columns, produced by `src/pipeline/flow.py`.
+Tags as in section 2; **Key** = salted pseudonym; **QA** = data-quality flag. *Missing* is the share of rows without a value on the 11 Nov 2026 run.
+
+| Column | Type | Tag | Missing |
+| --- | --- | --- | --- |
+| `order_key` | string | Key | 0.0% |
+| `customer_key` | string | Key | 0.0% |
+| `seller_key` | string | Key | 0.8% |
+| `order_purchase_timestamp` | datetime64[us] | P | 0.0% |
+| `order_status` | string | O | 0.0% |
+| `ts_anomaly` | int8 | QA | 0.0% |
+| `is_late` | Int8 | O | 3.0% |
+| `days_late` | float64 | O | 3.0% |
+| `delivery_days` | float64 | O | 3.0% |
+| `review_score` | float64 | O | 0.8% |
+| `is_delivered` | int8 | O | 0.0% |
+| `promised_days` | float64 | P | 0.0% |
+| `purchase_dow` | int8 | P | 0.0% |
+| `purchase_month` | int8 | P | 0.0% |
+| `purchase_hour` | int8 | P | 0.0% |
+| `is_peak_season` | int8 | P | 0.0% |
+| `distance_km` | float64 | P | 0.8% |
+| `interstate` | Int8 | P | 0.8% |
+| `customer_region` | str | P | 0.0% |
+| `customer_state` | string | P | 0.0% |
+| `seller_state` | string | P | 0.8% |
+| `n_items` | float64 | P | 0.8% |
+| `n_sellers` | float64 | P | 0.8% |
+| `price_total` | float64 | P | 0.8% |
+| `freight_total` | float64 | P | 0.8% |
+| `freight_ratio` | float64 | P | 0.8% |
+| `weight_total_g` | float64 | P | 0.8% |
+| `volume_total_cm3` | float64 | P | 0.8% |
+| `any_size_imputed` | float64 | P | 0.8% |
+| `primary_category` | string | P | 0.8% |
+| `payment_type` | string | P | 0.0% |
+| `is_boleto` | int8 | P | 0.0% |
+| `payment_installments` | float64 | P | 0.0% |
+| `n_payment_methods` | float64 | P | 0.0% |
+| `seller_hist_orders` | float64 | P | 0.8% |
+| `seller_hist_late_rate` | float64 | P | 6.4% |
+| `seller_hist_handling_days` | float64 | P | 6.4% |
+| `seller_size` | string | P | 0.8% |
+| `approval_lag_h` | float64 | H | 0.2% |
+| `handling_days` | float64 | H | 3.1% |
+| `handover_vs_limit_days` | float64 | H | 1.8% |

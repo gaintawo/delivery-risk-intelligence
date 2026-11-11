@@ -49,7 +49,7 @@ pytest -q
 - [Technical architecture](docs/technical_architecture.md)
 - [Data dictionary](docs/data_dictionary.md)
 - [RAID log](docs/RAID_LOG.md) ([spreadsheet](docs/raid_log.xlsx))
-- [Sprint backlog](docs/backlog.csv), loaded to the GitHub Project board with `python .github/setup_board.py`
+- [Sprint backlog](docs/backlog.csv): 32 detailed tickets, each linked to one of the 11 issues on the GitHub Project board
 
 ## Branching
 

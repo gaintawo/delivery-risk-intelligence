@@ -3,7 +3,7 @@
 **Sprint goal:** plan and set up. **Increment:** repository, board, data dictionary, RAID log, architecture.
 
 ## Review
-- Delivered: DRI-01 to DRI-05. DRI-06 (board) in progress.
+- Delivered: issues #1 and #2 (DRI-01 to DRI-06): scope confirmed, repository, environment file, data dictionary, RAID log, architecture and Project board.
 - Feedback received: _add instructor feedback here when Module 2 is graded_.
 
 ## Retrospective

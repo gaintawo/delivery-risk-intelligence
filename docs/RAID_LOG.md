@@ -42,7 +42,7 @@ Technical RAID log for Sprint S0. The same 24 entries, with editable scores and 
 |---|---|---|---|---|---|
 | D01 | Olist dataset availability and licence compliance (CC BY-NC-SA 4.0) | Raw copy versioned with DVC; Olist credited | Lead analyst | S1 | Met |
 | D02 | Python environment and required libraries | Minimum versions set; CI installs on every pull request | Lead analyst | All | Met |
-| D03 | GitHub repository and Project Board | Board built from docs/backlog.csv with .github/setup_board.py | Product owner | S0 | Open |
+| D03 | GitHub repository and Project Board | Board has 11 issues (#1-#11); each detailed ticket in docs/backlog.csv links to one | Product owner | S0 | Met |
 | D04 | Completion of data cleaning before model development | S2 tickets start only after DRI-10 and DRI-11 are done | Lead analyst | S1-S2 | Open |
 | D05 | Model evaluation before dashboard reporting | Dashboard (DRI-28) waits on fairness report and model card (DRI-22, DRI-24) | Lead analyst | S2-S3 | Open |
 | D06 | Responsible AI Review Board sign-off at end of S1 and S2 | Blocking tickets DRI-15 and DRI-25 on the board | Data Protection Officer | S1-S2 | Open |

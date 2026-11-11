@@ -9,7 +9,7 @@ Versions follow semantic versioning (Module 1, Section 6).
 - Full Module 1 directory structure: `notebooks/`, `src/` (pipeline, features, models, fairness, actions), `api/`, `dashboard/`, `tests/`.
 - `.gitignore` (keeps data and secrets out of Git) and `.env.example`.
 - GitHub Actions CI running `ruff` and `pytest` on every push and pull request.
-- Sprint backlog of 32 tickets (`docs/backlog.csv`) and board setup script (`.github/setup_board.py`).
+- Sprint backlog of 32 tickets (`docs/backlog.csv`), each linked to one of the 11 Project board issues.
 - Technical RAID log as a spreadsheet (`docs/raid_log.xlsx`) alongside `docs/RAID_LOG.md`.
 - Sprint S0 review and retrospective (`docs/sprint_notes/`).
 

@@ -1,0 +1,38 @@
+
+# Delivery Risk Intelligence (DRI)
+# Python dependencies
+
+# Data processing
+pandas
+numpy
+
+# Data visualization
+matplotlib
+seaborn
+
+# Machine learning
+scikit-learn
+xgboost
+
+# Model explainability and fairness
+shap
+fairlearn
+
+# Data quality and pipelines
+great_expectations
+prefect
+dbt-core
+
+# Experiment tracking
+mlflow
+
+# Dashboard
+streamlit
+plotly
+
+# API development
+fastapi
+uvicorn
+
+# Notebook environment
+jupyterlab

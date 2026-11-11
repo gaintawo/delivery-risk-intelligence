@@ -31,7 +31,7 @@ flowchart LR
 | 2 | Ingest | `ingest.load_all` | Reads every table with explicit string and date types | 1,550,922 rows across 9 tables |
 | 3 | Clean | `clean.py` | Drops duplicates and free text, fixes types, imputes product sizes, collapses geolocation | 569,144 rows across 8 tables |
 | 4 | Integrate | `integrate.py` | Aggregates items and payments per order, then joins customers, sellers, reviews and coordinates | 99,441 orders × 34 columns |
-| 5 | Transform | `src/features/build.py` | Builds labels and 33 tagged features, including point-in-time seller history | 99,441 × 54 |
+| 5 | Transform | `src/features/build.py` | Builds 5 label and outcome columns and 30 tagged features (27 known at purchase, 3 at hand-over), including point-in-time seller history | 99,441 × 54 |
 | 6 | Anonymise | `anonymize.py` | Salted SHA-256 keys; deletes postcodes, coordinates and raw IDs; allow-list of columns | 99,441 × 41 |
 | 7 | Validate | `validate.py` | 3 suites, 35 expectations; the model-ready suite is a hard gate | 35 / 35 passed |
 | 8 | Bias check | `src/fairness/bias.py` | Representation and base-rate checks by region and seller size | 3 regions flagged |

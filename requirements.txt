@@ -1,38 +1,40 @@
+# Delivery Risk Intelligence (DRI) - Python dependencies
+# Python 3.11+. Install with:  pip install -r requirements.txt
+# Grouped by the project stage they serve (see Module 1 technical stack).
 
-# Delivery Risk Intelligence (DRI)
-# Python dependencies
+# --- Data pipeline and storage (Module 3) ---
+pandas>=2.2
+numpy>=1.26
+pyarrow>=15.0
+sqlalchemy>=2.0
+psycopg2-binary>=2.9          # PostgreSQL driver
+dbt-postgres>=1.8             # SQL transformations
+prefect>=3.0                  # pipeline orchestration
+great-expectations>=1.0       # automated data quality checks
+google-cloud-storage>=2.16    # raw data bucket
+dvc[gs]>=3.50                 # data versioning with a GCS remote
+haversine>=2.8                # seller-to-customer distance
 
-# Data processing
-pandas
-numpy
+# --- Exploration (Modules 3-4) ---
+jupyterlab>=4.1
+matplotlib>=3.8
+seaborn>=0.13
 
-# Data visualization
-matplotlib
-seaborn
+# --- Modelling, explainability and fairness (Module 4) ---
+scikit-learn>=1.4
+xgboost>=2.0
+shap>=0.45
+fairlearn>=0.10
+mlflow>=2.12
 
-# Machine learning
-scikit-learn
-xgboost
+# --- Serving and dashboard (Module 5 / Final) ---
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+streamlit>=1.33
+plotly>=5.20
 
-# Model explainability and fairness
-shap
-fairlearn
-
-# Data quality and pipelines
-great_expectations
-prefect
-dbt-core
-
-# Experiment tracking
-mlflow
-
-# Dashboard
-streamlit
-plotly
-
-# API development
-fastapi
-uvicorn
-
-# Notebook environment
-jupyterlab
+# --- Configuration and quality ---
+python-dotenv>=1.0            # secrets come from .env, never from code
+pytest>=8.1
+ruff>=0.4

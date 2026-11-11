@@ -1,0 +1,33 @@
+id,title,sprint,milestone,labels,traces_to,deliverable,acceptance_criteria,stage
+DRI-01,Initialise repository with Module 1 folder structure,S0,S0 - Plan and set up (Module 2),infra,FR1,Repository,Folders match Module 1 Section 4; README and CHANGELOG present,Done
+DRI-02,Add requirements.txt and GitHub Actions CI,S0,S0 - Plan and set up (Module 2),infra,NFR Repeatability,Environment file,pip install succeeds; CI runs pytest on every pull request,Done
+DRI-03,Write preliminary data dictionary with P/H/O availability tags,S0,S0 - Plan and set up (Module 2),docs,FR1;FR2,Data dictionary,All 9 Olist tables documented; every column tagged,Done
+DRI-04,Create technical RAID log,S0,S0 - Plan and set up (Module 2),docs,Module 1 risks,RAID log,"Risks, assumptions, issues and dependencies each have owner and response",Done
+DRI-05,Draw system architecture diagram,S0,S0 - Plan and set up (Module 2),docs,Module 1 tech stack,Architecture diagram,Every component maps to a repo folder,Done
+DRI-06,Set up GitHub Project board with sprints and labels,S0,S0 - Plan and set up (Module 2),infra,Agile plan,Project board,Board shows Stage columns; all 32 tickets assigned a sprint,In Progress
+DRI-07,Download Olist data to data/raw and track with DVC,S1,S1 - Trustworthy data (Module 3),data,FR1,Raw data,dvc status clean; raw files never edited,Sprint Ready
+DRI-08,Provision PostgreSQL and Cloud Storage bucket,S1,S1 - Trustworthy data (Module 3),infra,FR1,Storage,Connection works from .env; no secrets committed,Sprint Ready
+DRI-09,Build Prefect ingest flow for all 9 tables,S1,S1 - Trustworthy data (Module 3),data,FR1,Pipeline,Flow loads all tables into staging; row counts logged,Sprint Ready
+DRI-10,"Write Great Expectations suite (nulls, date order, keys)",S1,S1 - Trustworthy data (Module 3),data,FR1;I1,Data quality,Suite runs in flow; failed check stops model update,Sprint Ready
+DRI-11,Build dbt staging models and order-level mart,S1,S1 - Trustworthy data (Module 3),data,FR1,Order mart,One row per order; joins tested,Sprint Ready
+DRI-12,Tag feature columns P/H/O and add leakage test,S1,S1 - Trustworthy data (Module 3),data,FR2;R1,Leakage register,Test fails if an O or X column reaches src/features,Sprint Ready
+DRI-13,"EDA: late rate by delay leg, region and month",S1,S1 - Trustworthy data (Module 3),data,G2;G3,EDA notebook,Notebook 01_explore.ipynb with written summary,Sprint Ready
+DRI-14,Publish baseline KPI report for G1-G5,S1,S1 - Trustworthy data (Module 3),docs,G1-G5,Baseline KPIs,Baseline value recorded for every Module 1 goal,Sprint Ready
+DRI-15,Review Board gate 1: data fair and legal to use,S1,S1 - Trustworthy data (Module 3),fairness,ER7;D4,Gate 1,DPO sign-off recorded in docs/,Sprint Ready
+DRI-16,"Engineer seller, distance, size, payment and calendar features",S2,S2 - Model v1 (Module 4),model,FR3,Features,Point-in-time seller history; features documented,Backlog
+DRI-17,Create time-based train/validation/test split,S2,S2 - Model v1 (Module 4),model,FR2,Validation design,No test order earlier than any training order,Backlog
+DRI-18,Train logistic regression baseline with MLflow tracking,S2,S2 - Model v1 (Module 4),model,FR3,Baseline model,Run logged with PR-AUC and recall at capacity,Backlog
+DRI-19,Train and tune XGBoost classifier with class weighting,S2,S2 - Model v1 (Module 4),model,G1,Classifier,Recall on late orders at least 70% at daily capacity,Backlog
+DRI-20,Train days-late regressor,S2,S2 - Model v1 (Module 4),model,G3,Regressor,Error reported in days; beats naive baseline,Backlog
+DRI-21,Generate SHAP top-3 reasons with plain-language mapping,S2,S2 - Model v1 (Module 4),model,FR3,Explanations,Every scored order has three readable reasons,Backlog
+DRI-22,Produce Fairlearn report by region and seller size,S2,S2 - Model v1 (Module 4),fairness,FR6;G5;ER1;ER3,Fairness report,Recall gap between regions 10 points or less,Backlog
+DRI-23,Compare model with and without postcode features,S2,S2 - Model v1 (Module 4),fairness,ER2,Proxy test,Trade-off recorded in model card,Backlog
+DRI-24,Write model card v1.0,S2,S2 - Model v1 (Module 4),docs,NIST AI RMF,Model card,"Purpose, metrics, fairness results and limits on one page",Backlog
+DRI-25,Review Board gate 2: fair and explainable,S2,S2 - Model v1 (Module 4),fairness,D4,Gate 2,Sign-off before user testing,Backlog
+DRI-26,Cluster sellers by handling-time profile for coaching,S3,S3 - Usable product (Module 5),model,ER3,Seller segments,Segments described; no seller removed by model,Backlog
+DRI-27,Rank actions by expected saving per risky order,S3,S3 - Usable product (Module 5),product,FR4,Recommendation engine,Each flagged order has a ranked action list,Backlog
+DRI-28,Build Streamlit dashboard with region/seller/category filters,S3,S3 - Usable product (Module 5),product,FR5,Dashboard,Daily risk list loads in under 5 seconds,Backlog
+DRI-29,Run persona review session and log feedback tickets,S3,S3 - Usable product (Module 5),product,Agile feedback,Persona review,Feedback converted to backlog tickets,Backlog
+DRI-30,Build FastAPI scoring endpoint and Docker image,S4,S4 - Live release (Final),infra,FR3;NFR Speed,Scoring API,Single order scored in under 0.5 seconds locally,Backlog
+DRI-31,Deploy to Cloud Run with batch and latency tests,S4,S4 - Live release (Final),infra,NFR Speed,Deployment,Day of orders scored in under 5 minutes,Backlog
+DRI-32,"Release v1.0.0 with CHANGELOG, tags and final docs",S4,S4 - Live release (Final),docs,Versioning,Release,"Tag links code, data and model versions",Backlog

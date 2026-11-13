@@ -28,3 +28,8 @@ logs/
 # Pipeline working files
 data/interim/*
 *.db
+
+# MLflow local store (screenshots and exported runs are in docs/evidence)
+mlflow.db
+mlruns/
+mlartifacts/

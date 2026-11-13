@@ -15,19 +15,19 @@ DRI-13,#4,"EDA: late rate by delay leg, region and month",Sprint 2,Sprint 2 – 
 DRI-14,#4,Publish baseline KPI report for G1-G5,Sprint 2,Sprint 2 – Data Understanding,docs,G1-G5,Baseline KPIs,Baseline value recorded for every Module 1 goal,Todo
 DRI-15,#5,Review Board gate 1: data fair and legal to use,Sprint 3,Sprint 3 – Data Preparation,fairness,ER7;D4,Gate 1,DPO sign-off recorded in docs/,In Review
 DRI-16,#6,"Engineer seller, distance, size, payment and calendar features",Sprint 3,Sprint 3 – Data Preparation,model,FR3,Features,Point-in-time seller history; features documented,Done
-DRI-17,#7,Create time-based train/validation/test split,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR2,Validation design,No test order earlier than any training order,Todo
-DRI-18,#7,Train logistic regression baseline with MLflow tracking,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR3,Baseline model,Run logged with PR-AUC and recall at capacity,Todo
-DRI-19,#7,Train and tune XGBoost classifier with class weighting,Sprint 4,Sprint 4 – Modelling and Evaluation,model,G1,Classifier,Recall on late orders at least 70% at daily capacity,Todo
-DRI-20,#7,Train days-late regressor,Sprint 4,Sprint 4 – Modelling and Evaluation,model,G3,Regressor,Error reported in days; beats naive baseline,Todo
-DRI-21,#9,Generate SHAP top-3 reasons with plain-language mapping,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR3,Explanations,Every scored order has three readable reasons,Todo
-DRI-22,#9,Produce Fairlearn report by region and seller size,Sprint 4,Sprint 4 – Modelling and Evaluation,fairness,FR6;G5;ER1;ER3,Fairness report,Recall gap between regions 10 points or less,Todo
-DRI-23,#9,Compare model with and without postcode features,Sprint 4,Sprint 4 – Modelling and Evaluation,fairness,ER2,Proxy test,Trade-off recorded in model card,Todo
-DRI-24,#8,Write model card v1.0,Sprint 4,Sprint 4 – Modelling and Evaluation,docs,NIST AI RMF,Model card,"Purpose, metrics, fairness results and limits on one page",Todo
+DRI-17,#7,Create time-based train/validation/test split,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR2,Validation design,No test order earlier than any training order,Done
+DRI-18,#7,Train logistic regression baseline with MLflow tracking,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR3,Baseline model,Run logged with PR-AUC and recall at capacity,Done
+DRI-19,#7,Train and tune XGBoost classifier with class weighting,Sprint 4,Sprint 4 – Modelling and Evaluation,model,G1,Classifier,Recall on late orders at least 70% at daily capacity,In Review
+DRI-20,#7,Train days-late regressor,Sprint 4,Sprint 4 – Modelling and Evaluation,model,G3,Regressor,Error reported in days; beats naive baseline,Done
+DRI-21,#9,Generate SHAP top-3 reasons with plain-language mapping,Sprint 4,Sprint 4 – Modelling and Evaluation,model,FR3,Explanations,Every scored order has three readable reasons,Done
+DRI-22,#9,Produce Fairlearn report by region and seller size,Sprint 4,Sprint 4 – Modelling and Evaluation,fairness,FR6;G5;ER1;ER3,Fairness report,Recall gap between regions 10 points or less,Done
+DRI-23,#9,Compare model with and without postcode features,Sprint 4,Sprint 4 – Modelling and Evaluation,fairness,ER2,Proxy test,Trade-off recorded in model card,Done
+DRI-24,#8,Write model card v1.0,Sprint 4,Sprint 4 – Modelling and Evaluation,docs,NIST AI RMF,Model card,"Purpose, metrics, fairness results and limits on one page",Done
 DRI-25,#9,Review Board gate 2: fair and explainable,Sprint 4,Sprint 4 – Modelling and Evaluation,fairness,D4,Gate 2,Sign-off before user testing,Todo
 DRI-26,#10,Cluster sellers by handling-time profile for coaching,Sprint 5,Sprint 5 – Dashboard and Reporting,model,ER3,Seller segments,Segments described; no seller removed by model,Todo
 DRI-27,#10,Rank actions by expected saving per risky order,Sprint 5,Sprint 5 – Dashboard and Reporting,product,FR4,Recommendation engine,Each flagged order has a ranked action list,Todo
 DRI-28,#10,Build Streamlit dashboard with region/seller/category filters,Sprint 5,Sprint 5 – Dashboard and Reporting,product,FR5,Dashboard,Daily risk list loads in under 5 seconds,Todo
 DRI-29,#10,Run persona review session and log feedback tickets,Sprint 5,Sprint 5 – Dashboard and Reporting,product,Agile feedback,Persona review,Feedback converted to backlog tickets,Todo
-DRI-30,#11,Build FastAPI scoring endpoint and Docker image,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,FR3;NFR Speed,Scoring API,Single order scored in under 0.5 seconds locally,Todo
+DRI-30,#11,Build FastAPI scoring endpoint and Docker image,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,FR3;NFR Speed,Scoring API,Single order scored in under 0.5 seconds locally,In Progress
 DRI-31,#11,Deploy to Cloud Run with batch and latency tests,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,NFR Speed,Deployment,Day of orders scored in under 5 minutes,Todo
 DRI-32,#11,"Release v1.0.0 with CHANGELOG, tags and final docs",Sprint 5,Sprint 5 – Dashboard and Reporting,docs,Versioning,Release,"Tag links code, data and model versions",Todo

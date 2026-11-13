@@ -8,7 +8,7 @@ BAN6800 Business Analytics Capstone · Nexford University · Gain Tawodzera
 | --- | --- |
 | Vertical | Logistics, last-mile delivery |
 | Dataset | [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (CC BY-NC-SA 4.0) |
-| Status | Sprints 2–3 (Module 3): data pipeline built and validated |
+| Status | Sprint 4 (Module 4): model trained, explained and fairness-tested; **shadow mode only** |
 
 ## Repository structure (from the Module 1 Vision Document)
 
@@ -61,6 +61,24 @@ GitHub Actions builds the container and runs the full pipeline on every push.
 | [Data anonymization plan](docs/data_anonymization_plan.md) | PII inventory and how each field is removed or pseudonymised |
 | [Data governance framework](docs/data_governance.md) | Access control, retention, audit logging, change control |
 | [Evidence](docs/evidence/) | Prefect run graph, Great Expectations results, bias report, audit log sample |
+
+## Model and API (Module 4)
+
+```bash
+pip install -r requirements-pipeline.txt -r requirements-model.txt
+python -m src.models.train      # tune 3 algorithms + baselines, log to MLflow, register champion
+python -m src.models.backtest   # rolling-origin check of the champion choice
+python -m src.models.analyze    # SHAP, fairness (Fairlearn), counterfactuals (DiCE), sensitivity
+uvicorn api.main:app            # POST /predict, docs at http://127.0.0.1:8000/docs
+mlflow ui --backend-store-uri sqlite:///mlflow.db
+```
+
+| Document | What it covers |
+| --- | --- |
+| [Model card](docs/model_cards/dri_late_classifier_card.md) | Intended use, performance, fairness, limits, monitoring |
+| [Fairness metrics report](docs/fairness_report.md) | Demographic parity, equalized odds, disparate impact, mitigation |
+| [SHAP notebook](notebooks/02_shap_analysis.ipynb) | Global, local and counterfactual explanations |
+| [Model evidence](docs/evidence/model/) | Figures, metrics, backtest, MLflow run export and screenshots |
 
 ## Planning documents (Module 2)
 

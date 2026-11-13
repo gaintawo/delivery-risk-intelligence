@@ -152,6 +152,11 @@ These fields will be created during data preparation in `src/features/`.
 | approval_lag_h | approved_at - purchase_timestamp | H | Payment cause, stage 2 only |
 | handling_days | delivered_carrier_date - approved_at | H | Seller cause, stage 2 only |
 | handover_vs_limit_days | delivered_carrier_date - shipping_limit_date | H | Missed hand-over deadline, stage 2 only |
+| state_late_rate_30d | late share of deliveries to the customer's state completed in the 30 days before purchase (min. 20) | P | Market context (Module 4); captures late-delivery waves |
+| state_delivery_days_30d | mean delivery days in the customer's state, same window | P | Market context (Module 4) |
+| promise_slack_days | promised_days - state_delivery_days_30d | P | How generous the promise is vs recent reality (Module 4) |
+| market_late_rate_14d | late share of all deliveries completed in Brazil in the 14 days before purchase (min. 20) | P | National disruption signal, e.g. May 2018 strike (Module 4) |
+| seller_orders_7d | orders the seller received in the 7 days before purchase | P | Seller workload (Module 4) |
 
 ## 5. Row counts
 
@@ -178,10 +183,10 @@ Customer identifiers will be used only where necessary for joining or validating
 
 This is a preliminary data dictionary based on the published Olist dataset schema. Field availability, data types, missing values and derived calculations will be verified during data exploration in Module 3.
 
-## 9. Model-ready output (Module 3)
+## 9. Model-ready output (Modules 3–4)
 
-`data/processed/orders_model_ready.parquet`: 99,441 rows (one per order), 41 columns, produced by `src/pipeline/flow.py`.
-Tags as in section 2; **Key** = salted pseudonym; **QA** = data-quality flag. *Missing* is the share of rows without a value on the 11 Nov 2026 run.
+`data/processed/orders_model_ready.parquet`: 99,441 rows (one per order), 46 columns, produced by `src/pipeline/flow.py`. Module 4 added the five market-context features.
+Tags as in section 2; **Key** = salted pseudonym; **QA** = data-quality flag. *Missing* = share of rows without a value (run of 13 Nov 2026).
 
 | Column | Type | Tag | Missing |
 | --- | --- | --- | --- |
@@ -223,6 +228,11 @@ Tags as in section 2; **Key** = salted pseudonym; **QA** = data-quality flag. *M
 | `seller_hist_late_rate` | float64 | P | 6.4% |
 | `seller_hist_handling_days` | float64 | P | 6.4% |
 | `seller_size` | string | P | 0.8% |
+| `state_late_rate_30d` | float64 | P | 3.0% |
+| `state_delivery_days_30d` | float64 | P | 3.0% |
+| `promise_slack_days` | float64 | P | 3.0% |
+| `market_late_rate_14d` | float64 | P | 0.5% |
+| `seller_orders_7d` | float64 | P | 0.8% |
 | `approval_lag_h` | float64 | H | 0.2% |
 | `handling_days` | float64 | H | 3.1% |
 | `handover_vs_limit_days` | float64 | H | 1.8% |

@@ -15,9 +15,9 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install
-        run: pip install -r requirements-pipeline.txt ruff==0.16.9
+        run: pip install -r requirements-pipeline.txt -r requirements-model.txt ruff==0.16.9
       - name: Lint
-        run: ruff check src tests
+        run: ruff check src tests api
       - name: Unit tests
         env:
           GX_ANALYTICS_ENABLED: "false"

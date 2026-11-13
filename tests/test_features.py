@@ -55,3 +55,19 @@ def test_every_output_feature_is_tagged(raw):
     # Outcome columns must never be tagged as model inputs.
     for col in ("is_late", "days_late", "delivery_days", "review_score"):
         assert FEATURE_TAGS[col] == "O"
+
+
+def test_market_context_counts_only_deliveries_before_purchase():
+    from src.features.build import _window_stats
+    t = pd.Timestamp
+    orders = pd.DataFrame({"order_id": ["late_buy", "early_buy"],
+                           "order_purchase_timestamp": [t("2018-03-01"), t("2018-01-20")],
+                           "customer_state": ["SP", "SP"]})
+    events = pd.DataFrame({"known_at": [t("2017-12-10"), t("2018-01-05"), t("2018-01-19"), t("2018-01-25")],
+                           "customer_state": ["SP"] * 4, "late": [1.0, 1.0, 0.0, 1.0],
+                           "days": [10.0, 20.0, 30.0, 5.0]})
+    w = _window_stats(orders, events, "customer_state", 30, ["late", "days"])
+    # early_buy: only the deliveries of 5 Jan (late) and 19 Jan (on time) fall in its 30-day window
+    assert w.loc["early_buy", "n"] == 2 and w.loc["early_buy", "cum_late"] == 1
+    # late_buy: the 25 Jan delivery is more than 30 days before 1 March
+    assert w.loc["late_buy", "n"] == 0

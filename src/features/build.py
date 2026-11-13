@@ -24,6 +24,9 @@ FEATURE_TAGS: dict[str, str] = {
     "payment_type": "P", "is_boleto": "P", "payment_installments": "P",
     "n_payment_methods": "P", "seller_hist_orders": "P", "seller_hist_late_rate": "P",
     "seller_hist_handling_days": "P", "seller_size": "P",
+    # recent market conditions, from orders delivered before the purchase (Module 4)
+    "state_late_rate_30d": "P", "state_delivery_days_30d": "P", "promise_slack_days": "P",
+    "market_late_rate_14d": "P", "seller_orders_7d": "P",
     # known at hand-over (stage-2 scoring only)
     "approval_lag_h": "H", "handling_days": "H", "handover_vs_limit_days": "H",
 }
@@ -105,9 +108,69 @@ def add_seller_history(df: pd.DataFrame) -> pd.DataFrame:
     return df.merge(hist[cols], on="order_id", how="left")
 
 
+def _window_stats(orders: pd.DataFrame, events: pd.DataFrame, by: str | None, days: int,
+                  value_cols: list[str]) -> pd.DataFrame:
+    """Sum of value_cols over events with known_at in (t - days, t), for each order's purchase time t.
+
+    Built from running totals: total at t minus total at t - days. Only events
+    already known before the purchase are counted (strictly earlier).
+    """
+    ev = events.sort_values("known_at").copy()
+    keys = [by] if by else []
+    grp = ev.groupby(by) if by else ev
+    for c in value_cols:
+        ev[f"cum_{c}"] = grp[c].cumsum()
+    ev["cum_n"] = (grp.cumcount() + 1) if by else range(1, len(ev) + 1)
+    cum_cols = ["cum_n"] + [f"cum_{c}" for c in value_cols]
+    left = orders[["order_id", "order_purchase_timestamp"] + keys].dropna().copy()
+    left["t_lo"] = left["order_purchase_timestamp"] - pd.Timedelta(days=days)
+    right = ev[keys + ["known_at"] + cum_cols]
+
+    def at(col):
+        m = pd.merge_asof(left.sort_values(col), right, left_on=col, right_on="known_at",
+                          by=by, direction="backward", allow_exact_matches=False)
+        return m.set_index("order_id")[cum_cols].fillna(0)
+
+    now = at("order_purchase_timestamp")
+    diff = now - at("t_lo").reindex(now.index)
+    return diff.rename(columns={"cum_n": "n"})
+
+
+def add_market_context(df: pd.DataFrame) -> pd.DataFrame:
+    """Recent delivery conditions, known at the moment of purchase.
+
+    Late deliveries come in waves (the Feb-May 2018 surge, holiday peaks), which
+    single-order facts cannot see. These features describe the last weeks of
+    *completed* deliveries before each purchase, so they never look ahead.
+    """
+    done = df[df["is_delivered"] == 1].copy()
+    events = pd.DataFrame({"known_at": done["order_delivered_customer_date"],
+                           "customer_state": done["customer_state"],
+                           "late": done["is_late"].astype("float64"),
+                           "days": done["delivery_days"].astype("float64")})
+    st = _window_stats(df, events, "customer_state", 30, ["late", "days"])
+    mk = _window_stats(df, events, None, 14, ["late"])
+    MIN_N = 20  # fewer recent deliveries than this: too few to trust, leave missing
+    out = pd.DataFrame(index=st.index)
+    out["state_late_rate_30d"] = (st["cum_late"] / st["n"]).where(st["n"] >= MIN_N).round(4)
+    out["state_delivery_days_30d"] = (st["cum_days"] / st["n"]).where(st["n"] >= MIN_N).round(2)
+    out = out.join(((mk["cum_late"] / mk["n"]).where(mk["n"] >= MIN_N).round(4)).rename("market_late_rate_14d"))
+
+    # seller workload: orders the seller received in the previous 7 days
+    buys = df[["seller_id", "order_purchase_timestamp"]].dropna().rename(columns={"order_purchase_timestamp": "known_at"})
+    buys["one"] = 1.0
+    sw = _window_stats(df, buys, "seller_id", 7, ["one"])
+    out = out.join(sw["n"].rename("seller_orders_7d"))
+
+    df = df.merge(out, left_on="order_id", right_index=True, how="left")
+    df["promise_slack_days"] = (df["promised_days"] - df["state_delivery_days_30d"]).round(2)
+    return df
+
+
 def build_features(df: pd.DataFrame) -> pd.DataFrame:
     df = add_labels(df)
     df = add_purchase_features(df)
     df = add_handover_features(df)
     df = add_seller_history(df)
+    df = add_market_context(df)
     return df

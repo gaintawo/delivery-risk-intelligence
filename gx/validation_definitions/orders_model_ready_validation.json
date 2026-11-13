@@ -1,11 +1,11 @@
 {
   "data": {
     "asset": {
-      "id": "a79ca143-fa74-478c-98fe-1b44805873dd",
+      "id": "258eb7ee-f178-418d-9940-db1a75e07607",
       "name": "orders_model_ready"
     },
     "batch_definition": {
-      "id": "1323b435-4b45-4aea-bcdb-816635aa640e",
+      "id": "cb863e64-1a7c-4e61-8171-e7d95a7e0949",
       "name": "whole_table"
     },
     "datasource": {

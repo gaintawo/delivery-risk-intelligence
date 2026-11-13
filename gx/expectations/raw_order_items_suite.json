@@ -1,7 +1,7 @@
 {
   "expectations": [
     {
-      "id": "2bde2d24-d1ee-4a0a-a294-30b1ef4257bb",
+      "id": "a9a22a13-005e-476b-9598-5e85af38e8cb",
       "kwargs": {
         "min_value": 5000
       },
@@ -10,7 +10,7 @@
       "type": "expect_table_row_count_to_be_between"
     },
     {
-      "id": "cc55ae69-be00-4a64-8d28-88d83187a7f7",
+      "id": "26fe72fa-9762-4c79-b162-ddfea43b4a91",
       "kwargs": {
         "column_list": [
           "order_id",
@@ -22,7 +22,7 @@
       "type": "expect_compound_columns_to_be_unique"
     },
     {
-      "id": "9c806437-4756-4d0e-835e-b25f392c4906",
+      "id": "910a4759-268d-46a8-95e7-3058f2a84135",
       "kwargs": {
         "column": "seller_id"
       },
@@ -31,7 +31,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "3cbb03a1-0c48-469b-8052-74883f22b60f",
+      "id": "d9689486-c77d-4bea-bbcf-dca13bf6a2e7",
       "kwargs": {
         "column": "price",
         "min_value": 0.01
@@ -41,7 +41,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "ff8a5889-943e-4e89-8583-188817f492be",
+      "id": "538837a5-3fbd-43b6-b4db-446a68194634",
       "kwargs": {
         "column": "freight_value",
         "min_value": 0.0

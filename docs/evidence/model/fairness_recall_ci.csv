@@ -1,0 +1,6 @@
+group,recall,ci_low,ci_high,late_orders
+North,0.7778,0.4444,1.0,9
+Northeast,0.9663,0.9213,1.0,89
+Central-West,0.5333,0.3883,0.6889,45
+South,0.375,0.25,0.5,64
+Southeast,0.298,0.2672,0.3313,812

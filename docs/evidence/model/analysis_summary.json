@@ -1,0 +1,279 @@
+{
+  "local_explanations": {
+    "true_positive_northeast": {
+      "reasons": [
+        {
+          "feature": "state_delivery_days_30d",
+          "reason": "Delivery time in customer's state, last 30 days",
+          "value": 19.63,
+          "impact_log_odds": 0.767
+        },
+        {
+          "feature": "distance_km",
+          "reason": "Seller-to-customer distance",
+          "value": 2341.5,
+          "impact_log_odds": 0.401
+        },
+        {
+          "feature": "seller_hist_late_rate",
+          "reason": "Seller's past late rate",
+          "value": 0.3333,
+          "impact_log_odds": 0.378
+        }
+      ],
+      "base_log_odds": -0.356,
+      "score": 0.7124858167392325
+    },
+    "true_negative": {
+      "reasons": [
+        {
+          "feature": "customer_state",
+          "reason": "Customer's state",
+          "value": "SC",
+          "impact_log_odds": 0.159
+        },
+        {
+          "feature": "state_delivery_days_30d",
+          "reason": "Delivery time in customer's state, last 30 days",
+          "value": 13.87,
+          "impact_log_odds": 0.147
+        },
+        {
+          "feature": "seller_size",
+          "reason": "Seller size (history)",
+          "value": "small",
+          "impact_log_odds": 0.14
+        }
+      ],
+      "base_log_odds": -0.356,
+      "score": 0.2918814170764933
+    },
+    "false_negative": {
+      "reasons": [
+        {
+          "feature": "distance_km",
+          "reason": "Seller-to-customer distance",
+          "value": 2357.2,
+          "impact_log_odds": 0.403
+        },
+        {
+          "feature": "promised_days",
+          "reason": "Days promised to the customer",
+          "value": 19.94,
+          "impact_log_odds": 0.314
+        },
+        {
+          "feature": "seller_hist_late_rate",
+          "reason": "Seller's past late rate",
+          "value": 0.2248,
+          "impact_log_odds": 0.237
+        }
+      ],
+      "base_log_odds": -0.356,
+      "score": 0.602759138631386
+    }
+  },
+  "counterfactuals": {
+    "examples": [
+      {
+        "order_key": "28a100261cd432ea",
+        "region": "Southeast",
+        "score": 0.502,
+        "counterfactuals": [
+          {
+            "changes": {
+              "promise_slack_days": [
+                -0.19,
+                5.23
+              ],
+              "seller_hist_handling_days": [
+                0.96,
+                0.58
+              ],
+              "promised_days": [
+                6.14,
+                11.56
+              ]
+            },
+            "new_score": 0.331,
+            "below_threshold": true
+          },
+          {
+            "changes": {
+              "seller_hist_handling_days": [
+                0.96,
+                0.81
+              ]
+            },
+            "new_score": 0.488,
+            "below_threshold": true
+          },
+          {
+            "changes": {
+              "seller_hist_handling_days": [
+                0.96,
+                0.76
+              ]
+            },
+            "new_score": 0.483,
+            "below_threshold": true
+          }
+        ]
+      },
+      {
+        "order_key": "be04ff520484befd",
+        "region": "Northeast",
+        "score": 0.631,
+        "counterfactuals": [
+          {
+            "changes": {
+              "promise_slack_days": [
+                8.01,
+                25.32
+              ],
+              "seller_hist_late_rate": [
+                0.09,
+                0.1
+              ],
+              "promised_days": [
+                20.07,
+                37.38
+              ]
+            },
+            "new_score": 0.222,
+            "below_threshold": true
+          },
+          {
+            "changes": {
+              "promise_slack_days": [
+                8.01,
+                26.72
+              ],
+              "promised_days": [
+                20.07,
+                38.78
+              ]
+            },
+            "new_score": 0.196,
+            "below_threshold": true
+          },
+          {
+            "changes": {
+              "promise_slack_days": [
+                8.01,
+                23.15
+              ],
+              "promised_days": [
+                20.07,
+                35.21
+              ]
+            },
+            "new_score": 0.262,
+            "below_threshold": true
+          }
+        ]
+      },
+      {
+        "order_key": "f9062d64bd317aa8",
+        "region": "Southeast",
+        "score": 0.926,
+        "counterfactuals": [],
+        "note": "none found"
+      }
+    ],
+    "promise_extension": {
+      "orders": 3154,
+      "median_days": 5.0,
+      "share_resolved_within_7_days": 0.7023,
+      "share_not_resolved_by_30_days": 0.0,
+      "median_days_by_region": {
+        "Central-West": 4.0,
+        "North": 7.0,
+        "Northeast": 7.0,
+        "South": 4.0,
+        "Southeast": 4.0
+      }
+    }
+  },
+  "fairness": {
+    "customer_region": {
+      "demographic_parity_difference": 0.5967,
+      "demographic_parity_ratio": 0.2354,
+      "disparate_impact_ratio": 0.2354,
+      "equalized_odds_difference": 0.6683,
+      "equalized_odds_ratio": 0.2289,
+      "recall_gap_all_groups": 0.6683,
+      "recall_gap_judged_groups": 0.6683,
+      "groups_too_small_to_judge": [
+        "North"
+      ],
+      "passes_g5_gate": false
+    },
+    "seller_size": {
+      "demographic_parity_difference": 0.0919,
+      "demographic_parity_ratio": 0.7085,
+      "disparate_impact_ratio": 0.7085,
+      "equalized_odds_difference": 0.1684,
+      "equalized_odds_ratio": 0.6716,
+      "recall_gap_all_groups": 0.1684,
+      "recall_gap_judged_groups": 0.1684,
+      "groups_too_small_to_judge": [],
+      "passes_g5_gate": false
+    },
+    "mitigated_threshold_optimizer": {
+      "demographic_parity_difference": 0.2018,
+      "demographic_parity_ratio": 0.3803,
+      "disparate_impact_ratio": 0.3803,
+      "equalized_odds_difference": 0.2734,
+      "equalized_odds_ratio": 0.3402,
+      "recall_gap_all_groups": 0.2734,
+      "recall_gap_judged_groups": 0.2474,
+      "groups_too_small_to_judge": [
+        "North"
+      ],
+      "passes_g5_gate": false
+    },
+    "unaware_no_geography": {
+      "demographic_parity_difference": 0.5796,
+      "demographic_parity_ratio": 0.2254,
+      "disparate_impact_ratio": 0.2254,
+      "equalized_odds_difference": 0.6246,
+      "equalized_odds_ratio": 0.217,
+      "recall_gap_all_groups": 0.6246,
+      "recall_gap_judged_groups": 0.6246,
+      "groups_too_small_to_judge": [
+        "North"
+      ],
+      "passes_g5_gate": false
+    }
+  },
+  "mitigated": {
+    "summary": {
+      "demographic_parity_difference": 0.2018,
+      "demographic_parity_ratio": 0.3803,
+      "disparate_impact_ratio": 0.3803,
+      "equalized_odds_difference": 0.2734,
+      "equalized_odds_ratio": 0.3402,
+      "recall_gap_all_groups": 0.2734,
+      "recall_gap_judged_groups": 0.2474,
+      "groups_too_small_to_judge": [
+        "North"
+      ],
+      "passes_g5_gate": false
+    },
+    "overall_recall": 0.5113,
+    "overall_precision": 0.1231,
+    "flag_rate": 0.2274
+  },
+  "unaware_metrics": {
+    "accuracy": 0.7352,
+    "precision": 0.083,
+    "recall": 0.3817,
+    "f1": 0.1364,
+    "flag_rate": 0.2519,
+    "brier": 0.176,
+    "roc_auc": 0.7136,
+    "pr_auc": 0.1061
+  },
+  "sensitivity_baseline_auc": 0.7126
+}

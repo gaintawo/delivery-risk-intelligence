@@ -3,6 +3,20 @@
 All notable changes to Delivery Risk Intelligence (DRI) are documented in this file.
 Versions follow semantic versioning (Module 1, Section 6).
 
+## [0.4.0] - November 2026 (Module 4, Sprint 4)
+
+### Added
+- Model training with MLflow tracking: majority-class and heuristic baselines, logistic regression, Random Forest and XGBoost, tuned by randomized search with time-series cross-validation (`src/models/train.py`). 116 runs logged.
+- Rolling-origin backtest for champion selection (`src/models/backtest.py`).
+- Champion registered as `dri-late-delivery-classifier` v3 (alias `champion`); serialized with joblib in `models/`.
+- SHAP explanations (`src/models/explain.py`, `notebooks/02_shap_analysis.ipynb`), DiCE counterfactuals, sensitivity analysis and Fairlearn fairness metrics with ThresholdOptimizer mitigation (`src/models/analyze.py`, `src/fairness/model_fairness.py`).
+- FastAPI service with `/predict` and `/health` (`api/main.py`) and 7 API tests.
+- Model card, fairness metrics report, delivery-days regressor.
+- Five market-context features known at purchase (`src/features/build.py`).
+
+### Changed
+- Decision rule: top 25% of each day's orders, replacing a fixed probability threshold that flagged only 7% of test orders (model v2).
+
 ## [0.3.0] - November 2026 (Module 3, Sprints 2–3)
 
 ### Added

@@ -1,7 +1,7 @@
 {
   "expectations": [
     {
-      "id": "bce387de-a0b8-4bf4-aa9a-46efd97fd261",
+      "id": "97e6fac4-784e-410b-8383-3739cd832953",
       "kwargs": {
         "min_value": 5000
       },
@@ -10,7 +10,7 @@
       "type": "expect_table_row_count_to_be_between"
     },
     {
-      "id": "65d8827c-e9cd-4cb2-80e3-60945ca8eca5",
+      "id": "41501303-3ab7-4ac0-ba81-74185610a80b",
       "kwargs": {
         "column": "order_id"
       },
@@ -19,7 +19,7 @@
       "type": "expect_column_values_to_be_unique"
     },
     {
-      "id": "1121ecea-c66c-4d1f-bb38-d47916765b2f",
+      "id": "5ad9fd7c-4f5e-4528-b18c-1ce4f38a8391",
       "kwargs": {
         "column": "order_id"
       },
@@ -28,7 +28,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "c7704b57-f34c-467b-afdb-38b1534cb795",
+      "id": "47b7810a-5456-4b8a-a780-19ade97007df",
       "kwargs": {
         "column": "order_purchase_timestamp"
       },
@@ -37,7 +37,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "6929d3c3-cf71-4010-889d-da2866e9a66d",
+      "id": "1bdb8492-6ad7-4863-afc2-f6b2b7d10536",
       "kwargs": {
         "column": "order_estimated_delivery_date"
       },
@@ -46,7 +46,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "cb807b7b-ab71-4946-a0ea-9a676e112f72",
+      "id": "d7e1e30b-d984-40ae-8881-f52c700d59ca",
       "kwargs": {
         "column": "order_status",
         "value_set": [
@@ -65,7 +65,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "bc96252f-dc8c-42f8-aedb-d9a6c40c1029",
+      "id": "4114e3cb-5392-4679-98f3-4c2a2c2f14f6",
       "kwargs": {
         "column_A": "order_approved_at",
         "column_B": "order_purchase_timestamp",
@@ -78,7 +78,7 @@
       "type": "expect_column_pair_values_a_to_be_greater_than_b"
     },
     {
-      "id": "a782ef4b-6560-42ce-8d2e-9c83eb82222c",
+      "id": "e8fdb8cc-4414-4265-9716-5aa69c6c4721",
       "kwargs": {
         "column_A": "order_delivered_customer_date",
         "column_B": "order_delivered_carrier_date",

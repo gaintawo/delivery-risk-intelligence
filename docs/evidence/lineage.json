@@ -1,6 +1,6 @@
 {
-  "run_id": "f041f56747f4",
-  "finished": "2026-11-11T19:39:34+00:00",
+  "run_id": "3cb3a2fa8320",
+  "finished": "2026-11-13T11:49:56+00:00",
   "stages": [
     {
       "stage": "acquire",
@@ -29,7 +29,7 @@
       "output": "9 typed DataFrames",
       "rows_out": 1550922,
       "cols_out": 0,
-      "seconds": 1.57,
+      "seconds": 5.21,
       "tables": {
         "orders": 99441,
         "items": 112650,
@@ -58,7 +58,7 @@
       "output": "8 clean tables",
       "rows_out": 569144,
       "cols_out": 0,
-      "seconds": 2.26,
+      "seconds": 3.08,
       "reports": {
         "orders": {
           "rows_in": 99441,
@@ -133,7 +133,7 @@
       "output": "orders_integrated",
       "rows_out": 99441,
       "cols_out": 34,
-      "seconds": 0.39,
+      "seconds": 0.62,
       "report": {
         "orders_without_items": 775,
         "orders_without_payment": 4,
@@ -149,8 +149,8 @@
       ],
       "output": "orders_features",
       "rows_out": 99441,
-      "cols_out": 54,
-      "seconds": 0.57,
+      "cols_out": 59,
+      "seconds": 1.61,
       "late_rate": 0.0811,
       "delivered": 96470
     },
@@ -161,8 +161,8 @@
       ],
       "output": "orders_model_ready",
       "rows_out": 99441,
-      "cols_out": 41,
-      "seconds": 0.24,
+      "cols_out": 46,
+      "seconds": 0.3,
       "columns_removed": [
         "order_id",
         "customer_id",
@@ -201,8 +201,8 @@
       ],
       "output": "gx data docs",
       "rows_out": 99441,
-      "cols_out": 41,
-      "seconds": 1.97,
+      "cols_out": 46,
+      "seconds": 3.1,
       "results": {
         "raw_orders": {
           "success": true,
@@ -232,8 +232,8 @@
       ],
       "output": "docs/evidence/bias_*.csv",
       "rows_out": 99441,
-      "cols_out": 41,
-      "seconds": 0.98,
+      "cols_out": 46,
+      "seconds": 1.18,
       "flags": {
         "under_represented_regions": [
           "North",
@@ -252,8 +252,8 @@
       ],
       "output": "parquet + warehouse table/view + dashboard_feed.csv",
       "rows_out": 99441,
-      "cols_out": 41,
-      "seconds": 2.21,
+      "cols_out": 46,
+      "seconds": 5.4,
       "parquet": "data/processed/orders_model_ready.parquet",
       "rows": 99441,
       "training_view_rows": 96470,

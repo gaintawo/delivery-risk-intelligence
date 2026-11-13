@@ -1,7 +1,7 @@
 {
   "expectations": [
     {
-      "id": "24f96c2f-7518-4630-8b86-920c34805cf7",
+      "id": "f87ba2f8-33e4-4110-ac99-e7907b42154b",
       "kwargs": {
         "min_value": 5000
       },
@@ -10,7 +10,7 @@
       "type": "expect_table_row_count_to_be_between"
     },
     {
-      "id": "b634f8e7-1d28-460d-91b9-0be69d5cc84f",
+      "id": "98acdee5-e74a-4306-a665-ac6a4ff9cb93",
       "kwargs": {
         "column_set": [
           "order_key",
@@ -51,6 +51,11 @@
           "seller_hist_late_rate",
           "seller_hist_handling_days",
           "seller_size",
+          "state_late_rate_30d",
+          "state_delivery_days_30d",
+          "promise_slack_days",
+          "market_late_rate_14d",
+          "seller_orders_7d",
           "approval_lag_h",
           "handling_days",
           "handover_vs_limit_days"
@@ -61,7 +66,7 @@
       "type": "expect_table_columns_to_match_set"
     },
     {
-      "id": "6c40afb6-4083-43c4-bc03-6560a3583c93",
+      "id": "4ee98dfa-51d0-4703-a2cc-455909df1d8e",
       "kwargs": {
         "column": "order_key",
         "regex": "^[0-9a-f]{16}$"
@@ -71,7 +76,7 @@
       "type": "expect_column_values_to_match_regex"
     },
     {
-      "id": "9c9f02d0-d7c4-4008-928a-ddfdf38f56a5",
+      "id": "fbe879ab-c969-4dd8-9fa3-2b181804e64d",
       "kwargs": {
         "column": "order_key"
       },
@@ -80,7 +85,7 @@
       "type": "expect_column_values_to_be_unique"
     },
     {
-      "id": "11b4b8b9-559b-4236-b1d2-20cb2f5af4c0",
+      "id": "f422d8ce-401e-4181-b6cf-5b6a7b2647c3",
       "kwargs": {
         "column": "order_purchase_timestamp"
       },
@@ -89,7 +94,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "3934690d-f89d-473d-b307-9398e46de376",
+      "id": "434480b6-59b7-4440-9f67-afd18fadddac",
       "kwargs": {
         "column": "customer_region"
       },
@@ -98,7 +103,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "ee2fa85b-4761-4695-bb32-aae7a013de3a",
+      "id": "39ae43b3-b066-49b6-b349-ed56d0e48596",
       "kwargs": {
         "column": "promised_days"
       },
@@ -107,7 +112,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "65745041-f2a8-4df6-8402-9c80b04b556c",
+      "id": "8feb6e3e-4ed7-46ce-b138-910e656f71f4",
       "kwargs": {
         "column": "is_late",
         "row_condition": {
@@ -124,7 +129,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "3b24949c-c12e-483f-8848-55c028cd1308",
+      "id": "06577f0b-9f10-450e-ac57-7028bfff34e6",
       "kwargs": {
         "column": "distance_km",
         "mostly": 0.99
@@ -134,7 +139,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "dd9cec25-a184-4da8-8f07-ff528e10871f",
+      "id": "97911a25-6c0d-4e8e-be57-9923a813a52a",
       "kwargs": {
         "column": "is_late",
         "value_set": [
@@ -147,7 +152,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "684a9af6-866a-45c2-9541-c4c664beabb0",
+      "id": "4992e452-8f11-44a9-9ec5-197f2e52a49a",
       "kwargs": {
         "column": "customer_region",
         "value_set": [
@@ -163,7 +168,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "b9a1c3ef-16d7-48a6-93dd-90dafdffae75",
+      "id": "2f56945e-1053-4616-948c-e8e27d8d571c",
       "kwargs": {
         "column": "customer_state",
         "value_set": [
@@ -201,7 +206,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "10713093-1913-4629-be59-a358145e42ec",
+      "id": "12b91c8d-7218-4d56-be93-beea437c97eb",
       "kwargs": {
         "column": "payment_type",
         "value_set": [
@@ -216,7 +221,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "32da8107-d2fe-4708-8c96-30b9044fb672",
+      "id": "a33eec54-6bb7-46ed-b7c3-c0d4603c239c",
       "kwargs": {
         "column": "seller_size",
         "value_set": [
@@ -230,7 +235,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "b45663a4-19d0-4a96-b2d2-a21148910cd3",
+      "id": "9ef478fd-f130-48a6-8a77-a9a2e42ea7f4",
       "kwargs": {
         "column": "promised_days",
         "max_value": 200.0,
@@ -241,7 +246,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "7625fea7-296d-4879-a95c-8c6edf3c665f",
+      "id": "1f82f403-1c05-4777-840e-48c5228697c9",
       "kwargs": {
         "column": "distance_km",
         "max_value": 4500.0,
@@ -252,7 +257,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "fd570dd9-f754-4932-85e2-8bc72cfc0101",
+      "id": "32e0c161-33f1-48e2-a6cd-50bd571d43bd",
       "kwargs": {
         "column": "price_total",
         "min_value": 0.01
@@ -262,7 +267,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "0abdc569-4a0d-4a75-9b18-4592ada0f710",
+      "id": "101ef130-cc0e-4e87-a9db-052c0d46aea6",
       "kwargs": {
         "column": "seller_hist_late_rate",
         "max_value": 1.0,
@@ -273,7 +278,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "38459544-f6f5-40b9-8a85-dcc52b562fe7",
+      "id": "cdf9b79f-50b0-4a53-a968-a9e86096a2cd",
       "kwargs": {
         "column": "review_score",
         "max_value": 5.0,
@@ -284,7 +289,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "627a7b2d-46fd-46c4-96c2-fa9f1bcdeb0f",
+      "id": "7e07178d-b5bb-49d4-8985-e065fc4a73d6",
       "kwargs": {
         "column": "handling_days",
         "max_value": 60.0,
@@ -296,7 +301,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "3bcb10d2-2972-48e9-8309-90a7de0c3d4b",
+      "id": "8fe75fd4-0c54-480b-b4fa-afdb95b728df",
       "kwargs": {
         "column": "approval_lag_h",
         "max_value": 720.0,
@@ -308,7 +313,7 @@
       "type": "expect_column_values_to_be_between"
     },
     {
-      "id": "f925ef2a-cf17-45b7-862e-0c9e46a6fc23",
+      "id": "c09f7b58-0616-485d-8ca9-48a3254882ee",
       "kwargs": {
         "column": "is_late",
         "max_value": 0.15,

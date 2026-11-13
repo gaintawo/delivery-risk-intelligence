@@ -1,0 +1,4 @@
+seller_size,orders,late_rate,selection_rate,recall_tpr,fpr,precision,late_orders
+large,13261.0,0.0557,0.2577,0.3789,0.2506,0.0819,739
+new,822.0,0.0474,0.3151,0.5128,0.3052,0.0772,39
+small,4520.0,0.0533,0.2232,0.3444,0.2164,0.0823,241

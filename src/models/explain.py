@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-import shap
 
 PLAIN = {
     "promised_days": "Days promised to the customer",
@@ -67,6 +66,8 @@ class Explainer:
             self.coef = self.model.coef_.ravel()
             self._base = float(self.model.intercept_[0] + self.coef @ self.mean_z)
         else:
+            import shap  # only tree models need the shap library
+
             self.tree = shap.TreeExplainer(self.model, feature_perturbation="tree_path_dependent")
             ev = self.tree.expected_value
             self._base = float(ev[1] if np.ndim(ev) else ev)

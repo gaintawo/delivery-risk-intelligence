@@ -1,0 +1,49 @@
+GET /health -> {'status': 'ok', 'model': 'dri-late-delivery-classifier', 'version': 3, 'algorithm': 'Logistic Regression'}
+
+=== Order A: flagged, arrived late (MA, Northeast; actually late) ===
+POST /predict -> risk 0.71 · band high · flagged True · fairness-adjusted flag True
+  reason 1: Delivery time in customer's state, last 30 days = 19.63 (+0.77)
+  reason 2: Seller-to-customer distance = 2341.5 (+0.40)
+  reason 3: Seller's past late rate = 0.33 (+0.38)
+
+=== Order B: low risk, arrived on time (SC, South; actually on time) ===
+POST /predict -> risk 0.29 · band low · flagged False · fairness-adjusted flag False
+  reason 1: Customer's state = SC (+0.16)
+  reason 2: Delivery time in customer's state, last 30 days = 13.87 (+0.15)
+  reason 3: Seller size (history) = small (+0.14)
+
+=== Order C: missed, arrived late (SP, Southeast; actually late) ===
+POST /predict -> risk 0.40 · band medium · flagged False · fairness-adjusted flag False
+  reason 1: Days promised to the customer = 12.96 (+0.76)
+  reason 2: Promise slack vs recent delivery time = 6.55 (+0.21)
+  reason 3: Seller's past delivered orders = 1061.0 (+0.14)
+
+Full response for the last order:
+{
+  "late_probability": 0.4012,
+  "flagged": false,
+  "flagged_fairness_adjusted": false,
+  "risk_band": "medium",
+  "threshold": 0.5003,
+  "top_reasons": [
+    {
+      "feature": "promised_days",
+      "reason": "Days promised to the customer",
+      "value": 12.96,
+      "impact_log_odds": 0.76
+    },
+    {
+      "feature": "promise_slack_days",
+      "reason": "Promise slack vs recent delivery time",
+      "value": 6.55,
+      "impact_log_odds": 0.206
+    },
+    {
+      "feature": "seller_hist_orders",
+      "reason": "Seller's past delivered orders",
+      "value": 1061.0,
+      "impact_log_odds": 0.141
+    }
+  ],
+  "model": "dri-late-delivery-classifier v3 (Logistic Regression)"
+}

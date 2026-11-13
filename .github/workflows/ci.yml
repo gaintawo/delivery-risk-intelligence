@@ -17,7 +17,7 @@ jobs:
       - name: Install
         run: pip install -r requirements-pipeline.txt -r requirements-model.txt ruff==0.16.9
       - name: Lint
-        run: ruff check src tests api
+        run: ruff check src tests api dashboard
       - name: Unit tests
         env:
           GX_ANALYTICS_ENABLED: "false"

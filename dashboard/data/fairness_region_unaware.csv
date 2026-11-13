@@ -1,0 +1,6 @@
+customer_region,orders,late_rate,selection_rate,recall_tpr,fpr,precision,late_orders
+Central-West,1066.0,0.0422,0.3949,0.6,0.3859,0.0641,45
+North,301.0,0.0299,0.6179,0.8889,0.6096,0.043,9
+Northeast,1640.0,0.0543,0.7482,0.9213,0.7382,0.0668,89
+South,2453.0,0.0261,0.2593,0.4844,0.2532,0.0487,64
+Southeast,13143.0,0.0618,0.1686,0.2968,0.1602,0.1088,812

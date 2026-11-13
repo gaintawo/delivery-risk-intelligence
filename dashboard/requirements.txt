@@ -1,0 +1,10 @@
+# Streamlit Community Cloud installs this file (it sits next to app.py).
+# Versions match the environment the Module 4 model was trained and saved in.
+streamlit==1.67.0
+plotly==7.1.0
+pandas==3.0.5
+numpy==2.5.3
+scikit-learn==1.9.1
+scipy==1.18.1
+fairlearn==0.15.0
+joblib==1.6.0

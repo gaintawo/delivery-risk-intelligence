@@ -26,7 +26,7 @@ DRI-24,#8,Write model card v1.0,Sprint 4,Sprint 4 – Modelling and Evaluation,d
 DRI-25,#9,Review Board gate 2: fair and explainable,Sprint 4,Sprint 4 – Modelling and Evaluation,fairness,D4,Gate 2,Sign-off before user testing,Todo
 DRI-26,#10,Cluster sellers by handling-time profile for coaching,Sprint 5,Sprint 5 – Dashboard and Reporting,model,ER3,Seller segments,Segments described; no seller removed by model,Todo
 DRI-27,#10,Rank actions by expected saving per risky order,Sprint 5,Sprint 5 – Dashboard and Reporting,product,FR4,Recommendation engine,Each flagged order has a ranked action list,Todo
-DRI-28,#10,Build Streamlit dashboard with region/seller/category filters,Sprint 5,Sprint 5 – Dashboard and Reporting,product,FR5,Dashboard,Daily risk list loads in under 5 seconds,Todo
+DRI-28,#10,Build Streamlit dashboard with region/seller/category filters,Sprint 5,Sprint 5 – Dashboard and Reporting,product,FR5,Dashboard,Daily risk list loads in under 5 seconds,In Review
 DRI-29,#10,Run persona review session and log feedback tickets,Sprint 5,Sprint 5 – Dashboard and Reporting,product,Agile feedback,Persona review,Feedback converted to backlog tickets,Todo
 DRI-30,#11,Build FastAPI scoring endpoint and Docker image,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,FR3;NFR Speed,Scoring API,Single order scored in under 0.5 seconds locally,In Progress
 DRI-31,#11,Deploy to Cloud Run with batch and latency tests,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,NFR Speed,Deployment,Day of orders scored in under 5 minutes,Todo

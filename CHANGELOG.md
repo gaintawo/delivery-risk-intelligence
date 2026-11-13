@@ -3,6 +3,16 @@
 All notable changes to Delivery Risk Intelligence (DRI) are documented in this file.
 Versions follow semantic versioning (Module 1, Section 6).
 
+## [0.5.0] - November 2026 (Module 5, Sprint 5)
+
+### Added
+- Streamlit stakeholder dashboard (`dashboard/app.py`, `dashboard/views.py`): overview with goal scorecard, global drivers, order explorer with live what-if, ethical compliance page using Fairlearn MetricFrame, transparency statement. Deployable to Streamlit Community Cloud (`dashboard/requirements.txt`, `.streamlit/config.toml`).
+- De-identified, scored test-period export for the dashboard (`src/models/export_dashboard.py`, `dashboard/data/`).
+- API demo script (`api/demo.py`) and its output; dashboard smoke tests (`tests/test_dashboard.py`).
+
+### Changed
+- `src/models/explain.py` imports SHAP only for tree models, so the dashboard and API need no SHAP install.
+
 ## [0.4.0] - November 2026 (Module 4, Sprint 4)
 
 ### Added

@@ -7,7 +7,7 @@
 | DRI-28 Dashboard | Live on Streamlit Community Cloud; 6 pages incl. monitoring | README live links |
 | DRI-30 API and Docker image | Single order 0.06 s median (target < 0.5 s) | `api/Dockerfile`, CI Compose test |
 | DRI-31 Deploy with batch and latency tests | Batch: a full day (about 207 orders) scored and explained in 0.002 s; the 18,603-order test period in 0.21 s. Live deployment on Render | `render.yaml` |
-| DRI-32 Release v1.0.0 | Tag `v1.0.0` links code, model registry version 3 and data fingerprints | CHANGELOG |
+| DRI-32 Release v1.0.0 | CHANGELOG 1.0.0 written; the `v1.0.0` release (tag) is created by the repository owner on GitHub Releases, linking code, model registry version 3 and data fingerprints | CHANGELOG |
 | New: monitoring, retraining, explanation store, Compose, CD, governance | Done | README "Monitoring, retraining and governance" |
 
 **Not done, carried forward:** DRI-13 EDA notebook, DRI-14 baseline KPI report (baselines now in the Final report), DRI-26 seller clustering, DRI-29 persona review session, DRI-19 recall target (not met by any model), DRI-15 DPO sign-off record.

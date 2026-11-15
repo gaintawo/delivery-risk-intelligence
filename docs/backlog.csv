@@ -30,4 +30,4 @@ DRI-28,#10,Build Streamlit dashboard with region/seller/category filters,Sprint 
 DRI-29,#10,Run persona review session and log feedback tickets,Sprint 5,Sprint 5 – Dashboard and Reporting,product,Agile feedback,Persona review,Feedback converted to backlog tickets,Todo
 DRI-30,#11,Build FastAPI scoring endpoint and Docker image,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,FR3;NFR Speed,Scoring API,Single order scored in under 0.5 seconds locally,Done
 DRI-31,#11,Deploy to Cloud Run with batch and latency tests,Sprint 5,Sprint 5 – Dashboard and Reporting,infra,NFR Speed,Deployment,Day of orders scored in under 5 minutes,In Review
-DRI-32,#11,"Release v1.0.0 with CHANGELOG, tags and final docs",Sprint 5,Sprint 5 – Dashboard and Reporting,docs,Versioning,Release,"Tag links code, data and model versions",Done
+DRI-32,#11,"Release v1.0.0 with CHANGELOG, tags and final docs",Sprint 5,Sprint 5 – Dashboard and Reporting,docs,Versioning,Release,"Tag links code, data and model versions",In Review

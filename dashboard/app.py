@@ -20,7 +20,16 @@ div[data-testid="stMetricValue"] {font-size: 1.7rem;}
 .warn {background:#FBF0E7; border-left:4px solid #D9691A; padding:.7rem 1rem; border-radius:4px; margin:.3rem 0 1rem 0;}
 </style>""", unsafe_allow_html=True)
 
+import importlib
+
 from dashboard import views
+
+# Streamlit Cloud re-runs app.py after a git push but keeps already-imported modules in memory,
+# so reload the pages module whenever its file has changed (otherwise new pages are missing).
+_mtime = Path(views.__file__).stat().st_mtime
+if getattr(views, "_loaded_mtime", None) != _mtime:
+    views = importlib.reload(views)
+    views._loaded_mtime = _mtime
 
 pg = st.navigation([
     st.Page(views.page_overview, title="Overview", icon="📊", default=True),

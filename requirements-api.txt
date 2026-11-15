@@ -10,3 +10,4 @@ joblib==1.6.0
 fairlearn==0.15.0
 xgboost==3.4.1
 prometheus_client==0.26.0
+pyarrow==26.0.1   # pandas 3 needs it to load the saved pipeline (string dtype)

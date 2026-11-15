@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+import pytest
+
+pytest.importorskip("matplotlib")
 
 from src.monitoring.monitor import TH, alerts, psi
 

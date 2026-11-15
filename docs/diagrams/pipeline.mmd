@@ -1,0 +1,10 @@
+flowchart LR
+  A["1 Acquire<br/>9 Olist CSVs<br/>SHA-256 logged"] --> B["2 Ingest<br/>typed schemas<br/>1.55 M rows"]
+  B --> C["3 Clean<br/>dedupe · types<br/>imputation"]
+  C --> D["4 Integrate<br/>1 row per order<br/>99,441"]
+  D --> E["5 Transform<br/>labels + 35 tagged<br/>features"]
+  E --> F["6 Anonymise<br/>salted hashes<br/>drop location"]
+  F --> G{"7 Validate<br/>Great Expectations<br/>35 checks"}
+  G -- pass --> H["8 Bias check<br/>Fairlearn<br/>by region, seller"]
+  G -- fail --> X["Stop:<br/>nothing loaded"]
+  H --> I["9 Load<br/>parquet · SQL view<br/>suppressed feed"]

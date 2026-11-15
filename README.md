@@ -15,7 +15,7 @@ BAN6800 Business Analytics Capstone · Nexford University · Gain Tawodzera
 | What | Link |
 | --- | --- |
 | Live dashboard (Streamlit, incl. XAI and fairness pages) | https://delivery-risk-intelligence.streamlit.app/ |
-| Live API (FastAPI on Render) | API_URL (`/docs` for the interactive page, `POST /predict`, `GET /explanations/{id}`, `/metrics`) |
+| Live API (FastAPI on Render) | https://dri-api-ghih.onrender.com (`/docs` for the interactive page, `POST /predict`, `GET /explanations/{id}`, `/metrics`) |
 | Monitoring dashboard (Evidently AI + Fairlearn, GitHub Pages) | https://gaintawo.github.io/delivery-risk-intelligence/ |
 | CI/CD | [GitHub Actions](https://github.com/gaintawo/delivery-risk-intelligence/actions): CI (lint, tests, pipeline in Docker, Compose smoke test), CD (images to GHCR, monitoring site, Render), monthly retraining |
 | Everything locally | `docker compose up --build` (pipeline, monitor, API, dashboard, monitoring site, Prometheus, Grafana) |

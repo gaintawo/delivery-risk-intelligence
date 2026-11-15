@@ -33,3 +33,6 @@ data/interim/*
 mlflow.db
 mlruns/
 mlartifacts/
+
+# Final Project build outputs (published by CD, not committed)
+build/

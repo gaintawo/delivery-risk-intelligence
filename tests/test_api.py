@@ -64,3 +64,29 @@ def test_riskier_order_scores_higher(client):
     p_safe = client.post("/predict", json=safe).json()["late_probability"]
     p_risky = client.post("/predict", json=risky).json()["late_probability"]
     assert p_risky > p_safe
+
+
+def test_prediction_is_stored_for_audit(client):
+    body = client.post("/predict", json=ORDER).json()
+    rec = client.get(f"/explanations/{body['prediction_id']}")
+    assert rec.status_code == 200
+    rec = rec.json()
+    assert rec["late_probability"] == body["late_probability"]
+    assert rec["top_reasons"] == body["top_reasons"]
+    assert "customer_state" in rec["inputs"] and len(rec["input_sha256"]) == 64
+    assert client.get("/explanations/not-a-real-id").status_code == 404
+
+
+def test_flagged_order_gets_support_actions_not_penalties(client):
+    risky = {**ORDER, "promised_days": 8}
+    body = client.post("/predict", json=risky).json()
+    assert body["flagged"]
+    assert 1 <= len(body["suggested_actions"]) <= 3
+    assert not any("penal" in a["action"].lower() and "not" not in a["action"].lower()
+                   for a in body["suggested_actions"])
+
+
+def test_metrics_endpoint_exposes_prediction_counts(client):
+    client.post("/predict", json=ORDER)
+    text = client.get("/metrics/").text
+    assert "dri_predictions_total" in text and "dri_late_probability_bucket" in text

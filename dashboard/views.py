@@ -371,3 +371,77 @@ def page_transparency():
                 "- Data: Olist Brazilian e-commerce public dataset (2016–2018), CC BY-NC-SA 4.0\n"
                 "- Code, model card and fairness report: "
                 "[github.com/gaintawo/delivery-risk-intelligence](https://github.com/gaintawo/delivery-risk-intelligence)")
+
+
+def page_monitoring():
+    st.title("Model monitoring: performance, drift and fairness over time")
+    st.caption("The test period (June–August 2018) replayed week by week as if the model were live. "
+               "Reference: the validation period (March–May 2018). Built by src/monitoring/monitor.py.")
+    wt = pd.read_csv(DATA / "monitoring_weekly.csv", parse_dates=["week"])
+    al = pd.read_csv(DATA / "monitoring_alerts.csv")
+    summ = json.loads((DATA / "monitoring_summary.json").read_text())
+    last = wt.iloc[-1]
+    m = st.columns(4)
+    m[0].metric("Recall, last 4 weeks", pct(last["recall_4w"]), "alert below 45%", delta_color="off", delta_arrow="off")
+    m[1].metric("ROC-AUC, last 4 weeks", f"{last['auc_4w']:.2f}", "retrain below 0.70", delta_color="off",
+                delta_arrow="off")
+    m[2].metric("Risk-score drift (PSI)", f"{last['score_psi']:.2f}", "alert above 0.20", delta_color="off",
+                delta_arrow="off")
+    m[3].metric("Alerts raised", f"{len(al)}", f"over {summ['weeks']} weeks", delta_color="off", delta_arrow="off")
+
+    st.subheader("Performance: late orders caught and ranking quality (rolling 4 weeks)")
+    fig = go.Figure()
+    fig.add_scatter(x=wt["week"], y=wt["recall_4w"], name="Recall, standard flags", mode="lines+markers",
+                    line={"color": TEAL, "width": 2.5})
+    fig.add_scatter(x=wt["week"], y=wt["recall_fair_4w"], name="Recall, fairness-adjusted", mode="lines+markers",
+                    line={"color": ORANGE, "width": 2.5})
+    fig.add_scatter(x=wt["week"], y=wt["auc_4w"], name="ROC-AUC", mode="lines", line={"color": SLATE, "dash": "dash"})
+    fig.add_hline(y=0.45, line_dash="dot", line_color=TEAL, annotation_text="recall alert 45%",
+                  annotation_position="bottom right")
+    fig.add_hline(y=0.70, line_dash="dot", line_color=SLATE, annotation_text="retrain below 0.70",
+                  annotation_position="top right")
+    bar_layout(fig, 340, yaxis_range=[0, 1])
+    st.plotly_chart(fig, width="stretch")
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.subheader("Drift (label-free, known on the day)")
+        fig = go.Figure()
+        fig.add_scatter(x=wt["week"], y=wt["score_psi"], name="Risk-score PSI", mode="lines+markers",
+                        line={"color": TEAL, "width": 2.5})
+        fig.add_scatter(x=wt["week"], y=wt["max_feature_psi"], name="Largest order-feature PSI",
+                        mode="lines+markers", line={"color": ORANGE, "width": 2.5},
+                        customdata=wt["max_psi_feature"].map(lambda f: PLAIN.get(f, f)),
+                        hovertemplate="%{x|%d %b}: %{y:.2f} (%{customdata})<extra></extra>")
+        fig.add_hline(y=0.2, line_dash="dot", line_color=SLATE, annotation_text="alert 0.20")
+        bar_layout(fig, 320, pct_axis=False)
+        fig.update_yaxes(type="log")
+        st.plotly_chart(fig, width="stretch")
+    with c2:
+        st.subheader("Fairness drift across regions")
+        fig = go.Figure()
+        fig.add_scatter(x=wt["week"], y=wt["recall_gap_4w"], name="Recall gap, standard", mode="lines+markers",
+                        line={"color": TEAL, "width": 2.5}, connectgaps=False)
+        fig.add_scatter(x=wt["week"], y=wt["recall_gap_fair_4w"], name="Recall gap, fairness-adjusted",
+                        mode="lines+markers", line={"color": ORANGE, "width": 2.5}, connectgaps=False)
+        fig.add_scatter(x=wt["week"], y=wt["flag_rate_gap_regions"], name="Flag-rate gap (label-free)",
+                        mode="lines", line={"color": SLATE, "dash": "dash"})
+        fig.add_hline(y=0.10, line_dash="dot", line_color=SLATE, annotation_text="G5 gate 0.10")
+        bar_layout(fig, 320, yaxis_range=[0, 1])
+        st.plotly_chart(fig, width="stretch")
+        st.caption("Gaps are shown only when at least two regions have 30+ late orders in the window.")
+
+    st.subheader("Alerts and the action each one triggers")
+    st.dataframe(al.rename(columns=str.capitalize), hide_index=True, width="stretch", height=280)
+
+    st.subheader("Does monthly retraining fix the decay?")
+    rt = pd.read_csv(DATA / "retraining_results.csv")
+    nx = rt[rt["model"].str.startswith("next month")].pivot(index="cutoff", columns="model", values="recall")
+    st.dataframe(nx.map(lambda v: pct(v)), width="stretch")
+    st.markdown('<div class="note">Retraining every month on the newest labelled orders passed every promotion gate '
+                "but did <b>not</b> stop the August fall: the retrained model caught 28% of August's late orders "
+                "against 32% for the model left alone. The August wave was not visible in facts known at purchase. "
+                "Retraining is kept as routine upkeep; recovering performance needs new data (courier tracking) "
+                "rather than more of the same data.</div>", unsafe_allow_html=True)
+    st.markdown("**Evidently AI reports and the full monitoring site:** see the Monitoring Dashboard link in the "
+                "project README.")

@@ -1,0 +1,28 @@
+# Live-service alerts (label-free). Model-quality, drift and fairness alerts that need
+# outcomes are computed by src/monitoring/monitor.py; see docs/governance/monitoring_plan.md.
+groups:
+  - name: dri-api
+    rules:
+      - alert: DRIApiDown
+        expr: up{job="dri-api"} == 0
+        for: 5m
+        labels: { severity: critical }
+        annotations: { summary: "Scoring API is not reachable" }
+      - alert: DRISlowScoring
+        expr: histogram_quantile(0.95, sum(rate(dri_predict_seconds_bucket[10m])) by (le)) > 0.5
+        for: 10m
+        labels: { severity: warning }
+        annotations: { summary: "95th percentile scoring time above 0.5 s (Module 1 requirement)" }
+      - alert: DRIFlagRateOutOfBand
+        expr: sum(rate(dri_predictions_total{flagged="true"}[1h])) / sum(rate(dri_predictions_total[1h])) < 0.15
+          or sum(rate(dri_predictions_total{flagged="true"}[1h])) / sum(rate(dri_predictions_total[1h])) > 0.35
+        for: 1h
+        labels: { severity: warning }
+        annotations: { summary: "Share of orders flagged outside 15-35%: recalibrate the threshold" }
+      - alert: DRIRegionalFlagGap
+        expr: |
+          max(sum by (region) (rate(dri_predictions_total{flagged="true"}[6h])) / sum by (region) (rate(dri_predictions_total[6h])))
+          - min(sum by (region) (rate(dri_predictions_total{flagged="true"}[6h])) / sum by (region) (rate(dri_predictions_total[6h]))) > 0.75
+        for: 6h
+        labels: { severity: warning, team: review-board }
+        annotations: { summary: "Regional flag-rate gap above 0.75 (reference 0.60): possible bias drift, open a fairness incident" }

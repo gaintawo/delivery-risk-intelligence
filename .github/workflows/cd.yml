@@ -1,0 +1,96 @@
+name: CD
+# Continuous delivery: on every push to main (and weekly), publish container images,
+# rebuild the monitoring site from a fresh pipeline run, deploy it to GitHub Pages,
+# and redeploy the live API on Render.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 3 * * 1"        # Mondays 03:17 UTC: weekly monitoring refresh
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  images:
+    name: Build and push images to GitHub Container Registry
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    strategy:
+      matrix:
+        include:
+          - { name: dri-api, file: api/Dockerfile }
+          - { name: dri-dashboard, file: dashboard/Dockerfile }
+          - { name: dri-pipeline, file: Dockerfile }
+          - { name: dri-monitor, file: monitoring/Dockerfile }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        run: |
+          IMG=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ matrix.name }}
+          docker build -f ${{ matrix.file }} -t $IMG:${GITHUB_SHA::7} -t $IMG:latest .
+          docker push --all-tags $IMG
+
+  monitoring:
+    name: Run pipeline and monitoring, build the monitoring site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run the data pipeline in its container
+        run: |
+          docker build -t dri-pipeline .
+          mkdir -p data logs docs/evidence && chmod -R 777 data logs docs/evidence
+          docker run --rm -v "$PWD/data:/app/data" -v "$PWD/logs:/app/logs" -v "$PWD/docs/evidence:/app/docs/evidence" \
+            -e DRI_HASH_SALT="${{ secrets.DRI_HASH_SALT || 'ci-only-salt' }}" dri-pipeline
+      - name: Monitoring (drift, fairness, performance, Evidently reports)
+        run: |
+          pip install -r requirements-monitoring.txt
+          python -m src.monitoring.monitor
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/monitoring_site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: monitoring-evidence
+          path: docs/evidence/monitoring
+
+  pages:
+    name: Deploy monitoring dashboard to GitHub Pages
+    needs: monitoring
+    runs-on: ubuntu-latest
+    # One-time setup by the repository owner: Settings -> Pages -> Source: GitHub Actions.
+    continue-on-error: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+  api:
+    name: Redeploy live API on Render
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Trigger Render deploy hook (skipped if the secret is not set)
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "RENDER_DEPLOY_HOOK not set: Render auto-deploys from main instead."; exit 0; fi
+          curl -fsS -X POST "$HOOK"

@@ -1,0 +1,44 @@
+name: Retrain
+# Monthly retraining with promotion gates (src/models/retrain.py). A gate-passing candidate is
+# registered in MLflow with alias "candidate"; only the Review Board moves the "champion" alias.
+on:
+  schedule:
+    - cron: "41 4 1 * *"        # 1st of each month, 04:41 UTC
+  workflow_dispatch:
+    inputs:
+      cutoff:
+        description: "Month-end cutoff (YYYY-MM-DD). The Olist data ends in 2018, so the default replays 2018-08-01."
+        default: "2018-08-01"
+
+permissions:
+  contents: read
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Fresh pipeline run (new data would arrive here)
+        run: |
+          docker build -t dri-pipeline .
+          mkdir -p data logs docs/evidence && chmod -R 777 data logs docs/evidence
+          docker run --rm -v "$PWD/data:/app/data" -v "$PWD/logs:/app/logs" -v "$PWD/docs/evidence:/app/docs/evidence" \
+            -e DRI_HASH_SALT="${{ secrets.DRI_HASH_SALT || 'ci-only-salt' }}" dri-pipeline
+      - name: Retrain, gate and register candidate
+        env:
+          DRI_RETRAIN_TRIGGER: ${{ github.event_name }}
+          MLFLOW_TRACKING_URI: sqlite:///mlflow-ci.db
+        run: |
+          pip install -r requirements-pipeline.txt -r requirements-model.txt
+          python -m src.models.retrain --cutoff "${{ inputs.cutoff || '2018-08-01' }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: retraining-${{ github.run_number }}
+          path: |
+            docs/evidence/retraining
+            build/candidates
+            mlflow-ci.db
+            mlruns

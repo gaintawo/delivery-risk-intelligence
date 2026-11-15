@@ -66,7 +66,15 @@ def main() -> None:
               f"flagged {p['flagged']} · fairness-adjusted flag {p['flagged_fairness_adjusted']}")
         for i, why in enumerate(p["top_reasons"], 1):
             print(f"  reason {i}: {why['reason']} = {why['value']} (+{why['impact_log_odds']:.2f})")
+        if p.get("expected_delivery_days") is not None:
+            print(f"  expected delivery {p['expected_delivery_days']} days "
+                  f"(promised {body['promised_days']:.0f}; expected days late {p['expected_days_late']})")
+        for a in p.get("suggested_actions", []):
+            print(f"  suggested action ({a['who']}): {a['action']}")
     print("\nFull response for the last order:\n" + json.dumps(p, indent=2))
+    audit = client.get(f"/explanations/{p['prediction_id']}").json()
+    print(f"\nGET /explanations/{p['prediction_id']} -> stored {audit['created_at']} · model {audit['model']} · "
+          f"input hash {audit['input_sha256'][:12]}… · score {audit['late_probability']}")
 
 
 if __name__ == "__main__":

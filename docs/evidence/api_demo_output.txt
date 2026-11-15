@@ -1,25 +1,32 @@
-GET /health -> {'status': 'ok', 'model': 'dri-late-delivery-classifier', 'version': 3, 'algorithm': 'Logistic Regression'}
+GET /health -> {'status': 'ok', 'model': 'dri-late-delivery-classifier', 'version': 3, 'algorithm': 'Logistic Regression', 'delivery_days_model': True, 'explanations_stored': 61}
 
 === Order A: flagged, arrived late (MA, Northeast; actually late) ===
 POST /predict -> risk 0.71 · band high · flagged True · fairness-adjusted flag True
   reason 1: Delivery time in customer's state, last 30 days = 19.63 (+0.77)
   reason 2: Seller-to-customer distance = 2341.5 (+0.40)
   reason 3: Seller's past late rate = 0.33 (+0.38)
+  expected delivery 16.5 days (promised 26; expected days late 0.0)
+  suggested action (Customer service): Update the delivery date shown to the customer
+  suggested action (Customer service): Send the customer an early, honest delivery update
+  suggested action (Seller support): Remind the seller to hand the parcel to the courier today
 
 === Order B: low risk, arrived on time (SC, South; actually on time) ===
 POST /predict -> risk 0.29 · band low · flagged False · fairness-adjusted flag False
   reason 1: Customer's state = SC (+0.16)
   reason 2: Delivery time in customer's state, last 30 days = 13.87 (+0.15)
   reason 3: Seller size (history) = small (+0.14)
+  expected delivery 14.4 days (promised 25; expected days late 0.0)
 
 === Order C: missed, arrived late (SP, Southeast; actually late) ===
 POST /predict -> risk 0.40 · band medium · flagged False · fairness-adjusted flag False
   reason 1: Days promised to the customer = 12.96 (+0.76)
   reason 2: Promise slack vs recent delivery time = 6.55 (+0.21)
   reason 3: Seller's past delivered orders = 1061.0 (+0.14)
+  expected delivery 8.9 days (promised 13; expected days late 0.0)
 
 Full response for the last order:
 {
+  "prediction_id": "2cfc0015-4b7d-4fc6-9f12-dbe39f7a3d5a",
   "late_probability": 0.4012,
   "flagged": false,
   "flagged_fairness_adjusted": false,
@@ -45,5 +52,10 @@ Full response for the last order:
       "impact_log_odds": 0.141
     }
   ],
+  "expected_delivery_days": 8.9,
+  "expected_days_late": 0.0,
+  "suggested_actions": [],
   "model": "dri-late-delivery-classifier v3 (Logistic Regression)"
 }
+
+GET /explanations/2cfc0015-4b7d-4fc6-9f12-dbe39f7a3d5a -> stored 2026-11-15T15:38:05+00:00 · model dri-late-delivery-classifier v3 (Logistic Regression) · input hash 0dbacbc8fa5f… · score 0.4012

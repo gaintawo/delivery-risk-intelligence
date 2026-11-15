@@ -3,26 +3,39 @@
     uvicorn api.main:app --reload        # then open http://127.0.0.1:8000/docs
 
 POST /predict scores one order at the moment of purchase and returns the
-late-delivery risk, whether it falls in the team's daily review list, and the
-top three reasons in plain language (SHAP).
+late-delivery risk, whether it falls in the team's daily review list, the top
+three reasons in plain language (SHAP), the expected delivery time and
+suggested low-cost actions. Every response is written to the explanation store
+(GET /explanations/{prediction_id}) and counted in Prometheus metrics (/metrics).
 """
 from __future__ import annotations
 
 import json
 import os
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
 
 import joblib
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
+from prometheus_client import Counter, Gauge, Histogram, make_asgi_app
 from pydantic import BaseModel, Field
 
+from api.store import ExplanationStore
+from src.actions.recommend import suggest
 from src.models.explain import Explainer
 
 MODEL_DIR = Path(os.getenv("DRI_MODEL_DIR", Path(__file__).resolve().parents[1] / "models"))
 STATE: dict = {}
+
+PREDICTIONS = Counter("dri_predictions_total", "Orders scored", ["flagged", "region"])
+LATENCY = Histogram("dri_predict_seconds", "Time to score one order",
+                    buckets=(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5))
+SCORE = Histogram("dri_late_probability", "Distribution of risk scores (drift signal)",
+                  buckets=tuple(i / 10 for i in range(1, 11)))
+MODEL_INFO = Gauge("dri_model_info", "Model in service", ["model", "version", "algorithm"])
 
 
 class Order(BaseModel):
@@ -73,6 +86,7 @@ class Order(BaseModel):
 
 
 class Prediction(BaseModel):
+    prediction_id: str = Field(..., description="Key for GET /explanations/{prediction_id} (audit trail)")
     late_probability: float
     flagged: bool
     flagged_fairness_adjusted: bool | None = Field(
@@ -80,6 +94,9 @@ class Prediction(BaseModel):
     risk_band: Literal["low", "medium", "high"]
     threshold: float
     top_reasons: list[dict]
+    expected_delivery_days: float | None = Field(None, description="Delivery-days model (goal G3)")
+    expected_days_late: float | None = Field(None, description="Expected days after the promised date (0 = on time)")
+    suggested_actions: list[dict] = Field(default_factory=list, description="Advice only; a person decides")
     model: str
 
 
@@ -88,6 +105,13 @@ def load() -> None:
     model = joblib.load(MODEL_DIR / "dri_late_classifier.joblib")
     post = MODEL_DIR / "dri_fairness_postprocessor.joblib"
     STATE["postprocessor"] = joblib.load(post) if post.exists() else None
+    reg = MODEL_DIR / "dri_delivery_days_regressor.joblib"
+    try:
+        STATE["regressor"] = joblib.load(reg) if reg.exists() else None
+    except ModuleNotFoundError:  # xgboost not installed: serve without the delivery-days estimate
+        STATE["regressor"] = None
+    STATE["store"] = ExplanationStore()
+    MODEL_INFO.labels(meta["model_name"], str(meta["version"]), meta["algorithm"]).set(1)
     STATE.update(meta=meta, model=model, features=meta["features"],
                  explainer=Explainer(model, None, meta["features"], mean_encoded=meta.get("encoded_mean")))
 
@@ -98,8 +122,10 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Delivery Risk Intelligence API", version="1.0.0", lifespan=lifespan,
-              description="Late-delivery risk for Olist orders at the moment of purchase (BAN6800 Module 4).")
+app = FastAPI(title="Delivery Risk Intelligence API", version="1.1.0", lifespan=lifespan,
+              description="Late-delivery risk for Olist orders at the moment of purchase (BAN6800). "
+                          "Shadow mode: scores are advice for review, not decisions.")
+app.mount("/metrics", make_asgi_app())
 
 
 def to_frame(order: Order) -> pd.DataFrame:
@@ -121,25 +147,62 @@ def to_frame(order: Order) -> pd.DataFrame:
     return df
 
 
+@app.get("/")
+def root() -> dict:
+    return {"service": "Delivery Risk Intelligence API", "docs": "/docs", "health": "/health",
+            "predict": "POST /predict", "audit": "GET /explanations/{prediction_id}", "metrics": "/metrics",
+            "status": "shadow mode: scores are advice for review, not decisions"}
+
+
 @app.get("/health")
 def health() -> dict:
     m = STATE.get("meta", {})
     return {"status": "ok" if "model" in STATE else "loading", "model": m.get("model_name"),
-            "version": m.get("version"), "algorithm": m.get("algorithm")}
+            "version": m.get("version"), "algorithm": m.get("algorithm"),
+            "delivery_days_model": STATE.get("regressor") is not None,
+            "explanations_stored": STATE["store"].count() if "store" in STATE else 0}
 
 
 @app.post("/predict", response_model=Prediction)
 def predict(order: Order) -> Prediction:
     if "model" not in STATE:
         raise HTTPException(503, "Model not loaded")
+    t0 = time.perf_counter()
     X = to_frame(order)
     p = float(STATE["model"].predict_proba(X)[0, 1])
     thr = STATE["meta"]["threshold"]
-    band = "high" if p >= thr else ("medium" if p >= thr * 0.6 else "low")
+    flagged = p >= thr
+    band = "high" if flagged else ("medium" if p >= thr * 0.6 else "low")
     fair = None
     if STATE.get("postprocessor") is not None:
         fair = bool(STATE["postprocessor"].predict(X, sensitive_features=X["customer_region"], random_state=0)[0])
-    return Prediction(late_probability=round(p, 4), flagged=p >= thr, flagged_fairness_adjusted=fair,
-                      risk_band=band, threshold=round(thr, 4),
-                      top_reasons=STATE["explainer"].reasons(X),
-                      model=f"{STATE['meta']['model_name']} v{STATE['meta']['version']} ({STATE['meta']['algorithm']})")
+    days = late_days = None
+    if STATE.get("regressor") is not None:
+        days = round(float(STATE["regressor"].predict(X)[0]), 1)
+        late_days = round(max(0.0, days - order.promised_days), 1)
+    reasons = STATE["explainer"].reasons(X)
+    result = {"late_probability": round(p, 4), "flagged": flagged, "flagged_fairness_adjusted": fair,
+              "risk_band": band, "threshold": round(thr, 4), "top_reasons": reasons,
+              "expected_delivery_days": days, "expected_days_late": late_days,
+              "suggested_actions": suggest(reasons, flagged or bool(fair), late_days),
+              "model": f"{STATE['meta']['model_name']} v{STATE['meta']['version']} ({STATE['meta']['algorithm']})"}
+    pid = STATE["store"].record(order.model_dump(), result)
+    LATENCY.observe(time.perf_counter() - t0)
+    SCORE.observe(p)
+    PREDICTIONS.labels(str(flagged).lower(), order.customer_region).inc()
+    return Prediction(prediction_id=pid, **result)
+
+
+@app.get("/explanations/{prediction_id}")
+def explanation(prediction_id: str) -> dict:
+    """The stored record behind one score, for audit or a seller's challenge."""
+    rec = STATE["store"].get(prediction_id)
+    if rec is None:
+        raise HTTPException(404, "No explanation stored with that id")
+    return rec
+
+
+@app.get("/explanations")
+def explanations(limit: int = Query(20, ge=1, le=200)) -> list[dict]:
+    """Most recent stored explanations (audit view)."""
+    return STATE["store"].recent(limit)

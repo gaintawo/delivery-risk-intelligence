@@ -1,0 +1,5 @@
+# Monitoring job (src/monitoring/monitor.py) and its container. Tested 2026-11-15, Python 3.13.
+-r requirements-pipeline.txt
+evidently==0.7.23
+matplotlib==3.11.2
+joblib==1.6.0

@@ -1,0 +1,15 @@
+# Render Blueprint: deploys the live scoring API from api/Dockerfile.
+# Render dashboard -> New -> Blueprint -> pick this repository -> Apply.
+services:
+  - type: web
+    name: dri-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    branch: main
+    envVars:
+      - key: DRI_EXPLANATION_DB
+        value: /app/logs/explanations.db

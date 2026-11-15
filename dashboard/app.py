@@ -27,7 +27,8 @@ pg = st.navigation([
     st.Page(views.page_drivers, title="What drives risk", icon="🔍", url_path="drivers"),
     st.Page(views.page_explorer, title="Order explorer & what-if", icon="🧪", url_path="what-if"),
     st.Page(views.page_fairness, title="Ethical compliance", icon="⚖️", url_path="fairness"),
+    st.Page(views.page_monitoring, title="Monitoring", icon="📈", url_path="monitoring"),
     st.Page(views.page_transparency, title="Transparency", icon="📄", url_path="transparency"),
 ])
-st.sidebar.caption("BAN6800 Module 5 · Gain Tawodzera\n\nShadow mode: scores are not used for decisions.")
+st.sidebar.caption("BAN6800 Final Project · Gain Tawodzera\n\nShadow mode: scores are not used for decisions.")
 pg.run()

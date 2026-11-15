@@ -18,7 +18,7 @@ def test_app_entry_point_renders():
 
 
 @pytest.mark.parametrize("page", ["page_overview", "page_drivers", "page_explorer", "page_fairness",
-                                  "page_transparency"])
+                                  "page_monitoring", "page_transparency"])
 def test_page_renders(page):
     from streamlit.testing.v1 import AppTest
 

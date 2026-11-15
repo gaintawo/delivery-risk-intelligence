@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install
-        run: pip install -r requirements-pipeline.txt -r requirements-model.txt ruff==0.16.9
+        run: pip install -r requirements-pipeline.txt -r requirements-model.txt -r requirements-monitoring.txt ruff==0.16.9
       - name: Lint
         run: ruff check src tests api dashboard
       - name: Unit tests
@@ -53,3 +53,41 @@ jobs:
             logs/audit.log
             gx-out/data_docs
             data/processed/dashboard_feed.csv
+
+  compose:
+    name: Docker Compose smoke test (API, dashboard, Prometheus, Grafana)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose file
+        run: docker compose config --quiet
+      - name: Build and start services
+        run: docker compose up -d --build --wait --wait-timeout 300 api dashboard prometheus grafana
+      - name: Score an order through the API and read it back from the explanation store
+        run: |
+          curl -fsS localhost:8000/health
+          ID=$(curl -fsS -X POST localhost:8000/predict -H 'Content-Type: application/json' -d '{
+            "promised_days": 18, "purchase_dow": 4, "purchase_month": 11, "purchase_hour": 21,
+            "is_peak_season": 1, "distance_km": 2110, "interstate": 1, "price_total": 129.9,
+            "freight_total": 38.5, "weight_total_g": 1800, "volume_total_cm3": 9000,
+            "seller_hist_orders": 42, "seller_hist_late_rate": 0.19, "seller_hist_handling_days": 3.4,
+            "customer_state": "BA", "seller_state": "SP", "customer_region": "Northeast",
+            "primary_category": "health_beauty", "payment_type": "boleto"}' | python -c "import sys,json; r=json.load(sys.stdin); print(r, file=sys.stderr); print(r['prediction_id'])")
+          curl -fsS localhost:8000/explanations/$ID
+      - name: Prometheus scrapes the API; Grafana and the dashboard are up
+        run: |
+          for i in $(seq 1 20); do
+            curl -fsS 'localhost:9090/api/v1/query?query=dri_predictions_total' | grep -q dri_predictions_total && break
+            sleep 5
+          done
+          curl -fsS 'localhost:9090/api/v1/query?query=dri_predictions_total' | grep dri_predictions_total
+          curl -fsS localhost:3000/api/health
+          curl -fsS 'localhost:3000/api/search?query=DRI' | grep -q dri-api
+          curl -fsS localhost:8501/_stcore/health
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --tail 80
+      - name: Stop
+        if: always()
+        run: docker compose down -v

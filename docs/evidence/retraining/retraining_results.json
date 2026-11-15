@@ -1,0 +1,182 @@
+[
+  {
+    "cutoff": "2018-06-01",
+    "train_from": "2017-03-02",
+    "gate_from": "2018-04-02",
+    "labelled_until": "2018-05-02",
+    "train_orders": 61758,
+    "current_model": "v3 champion (trained to Feb 2018)",
+    "gate_candidate": {
+      "recall": 0.6971428571428572,
+      "precision": 0.14153132250580047,
+      "roc_auc": 0.8171281296023565,
+      "pr_auc": 0.20571079122113312,
+      "regional_gap": 0.4583333333333333,
+      "orders": 6849,
+      "late_orders": 350
+    },
+    "gate_current": {
+      "recall": 0.7085714285714285,
+      "precision": 0.14385150812064965,
+      "roc_auc": 0.8147136922163849,
+      "pr_auc": 0.20032099425000244,
+      "regional_gap": 0.46212121212121215,
+      "orders": 6849,
+      "late_orders": 350
+    },
+    "next_candidate": {
+      "recall": 0.6385542168674698,
+      "precision": 0.034505208333333336,
+      "roc_auc": 0.7571526752277695,
+      "pr_auc": 0.055734412521404965,
+      "regional_gap": 0.44113372093023256,
+      "orders": 6096,
+      "late_orders": 83
+    },
+    "next_current": {
+      "recall": 0.6746987951807228,
+      "precision": 0.036458333333333336,
+      "roc_auc": 0.7609777209620119,
+      "pr_auc": 0.06238978481498003,
+      "regional_gap": 0.4258720930232558,
+      "orders": 6096,
+      "late_orders": 83
+    },
+    "gates": {
+      "recall": true,
+      "roc_auc": true,
+      "fairness": true,
+      "all": true
+    },
+    "registered_version": 4,
+    "next_static_v3": {
+      "recall": 0.6746987951807228,
+      "precision": 0.036458333333333336,
+      "roc_auc": 0.7609777209620119,
+      "pr_auc": 0.06238978481498003,
+      "regional_gap": 0.4258720930232558,
+      "orders": 6096,
+      "late_orders": 83
+    }
+  },
+  {
+    "cutoff": "2018-07-01",
+    "train_from": "2017-04-01",
+    "gate_from": "2018-05-01",
+    "labelled_until": "2018-06-01",
+    "train_orders": 65902,
+    "current_model": "retrained at 2018-06-01",
+    "gate_candidate": {
+      "recall": 0.512589928057554,
+      "precision": 0.16804245283018868,
+      "roc_auc": 0.7567960809779433,
+      "pr_auc": 0.19087963115071327,
+      "regional_gap": 0.670995670995671,
+      "orders": 6749,
+      "late_orders": 556
+    },
+    "gate_current": {
+      "recall": 0.4982014388489209,
+      "precision": 0.1633254716981132,
+      "roc_auc": 0.7456199096914944,
+      "pr_auc": 0.18300181992243703,
+      "regional_gap": 0.696969696969697,
+      "orders": 6749,
+      "late_orders": 556
+    },
+    "next_candidate": {
+      "recall": 0.427536231884058,
+      "precision": 0.07607994842037395,
+      "roc_auc": 0.6874500887311445,
+      "pr_auc": 0.10341593745124865,
+      "regional_gap": 0.8444444444444446,
+      "orders": 6156,
+      "late_orders": 276
+    },
+    "next_current": {
+      "recall": 0.42391304347826086,
+      "precision": 0.07543520309477757,
+      "roc_auc": 0.6860100561963915,
+      "pr_auc": 0.1006483017909983,
+      "regional_gap": 0.8444444444444446,
+      "orders": 6156,
+      "late_orders": 276
+    },
+    "gates": {
+      "recall": true,
+      "roc_auc": true,
+      "fairness": true,
+      "all": true
+    },
+    "registered_version": 5,
+    "next_static_v3": {
+      "recall": 0.42391304347826086,
+      "precision": 0.07543520309477757,
+      "roc_auc": 0.6923586463570935,
+      "pr_auc": 0.09841499359485952,
+      "regional_gap": 0.8666666666666667,
+      "orders": 6156,
+      "late_orders": 276
+    }
+  },
+  {
+    "cutoff": "2018-08-01",
+    "train_from": "2017-05-02",
+    "gate_from": "2018-06-02",
+    "labelled_until": "2018-07-02",
+    "train_orders": 70421,
+    "current_model": "retrained at 2018-07-01",
+    "gate_candidate": {
+      "recall": 0.6666666666666666,
+      "precision": 0.03531720078482668,
+      "roc_auc": 0.7498262696748303,
+      "pr_auc": 0.06161137074756786,
+      "regional_gap": 0.44496124031007755,
+      "orders": 6068,
+      "late_orders": 81
+    },
+    "gate_current": {
+      "recall": 0.654320987654321,
+      "precision": 0.03466317854807063,
+      "roc_auc": 0.7484611720456049,
+      "pr_auc": 0.0532790290912709,
+      "regional_gap": 0.41162790697674423,
+      "orders": 6068,
+      "late_orders": 81
+    },
+    "next_candidate": {
+      "recall": 0.27575757575757576,
+      "precision": 0.11382113821138211,
+      "roc_auc": 0.6331075648418822,
+      "pr_auc": 0.14804866398202093,
+      "regional_gap": 0.29929342754299426,
+      "orders": 6351,
+      "late_orders": 660
+    },
+    "next_current": {
+      "recall": 0.2924242424242424,
+      "precision": 0.1207004377736085,
+      "roc_auc": 0.6381271864666699,
+      "pr_auc": 0.14936171003031692,
+      "regional_gap": 0.28022930275963204,
+      "orders": 6351,
+      "late_orders": 660
+    },
+    "gates": {
+      "recall": true,
+      "roc_auc": true,
+      "fairness": true,
+      "all": true
+    },
+    "registered_version": 6,
+    "next_static_v3": {
+      "recall": 0.3181818181818182,
+      "precision": 0.13133208255159476,
+      "roc_auc": 0.654091521434695,
+      "pr_auc": 0.15361366469039792,
+      "regional_gap": 0.25769897347020393,
+      "orders": 6351,
+      "late_orders": 660
+    }
+  }
+]

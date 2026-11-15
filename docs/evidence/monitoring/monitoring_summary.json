@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-11-15 15:41 UTC",
+  "model": "dri-late-delivery-classifier v3",
+  "weeks": 12,
+  "alerts": 42,
+  "alerts_by_type": {
+    "drift": 22,
+    "fairness": 11,
+    "performance": 9
+  },
+  "first_retrain_alert_week": "2018-07-23",
+  "last_week": {
+    "week": "2018-08-20",
+    "recall_4w": 0.318118948824343,
+    "recall_fair_4w": 0.5338865836791148,
+    "auc_4w": 0.6499098350605976,
+    "score_psi": 0.6734452025755879,
+    "max_feature_psi": 1.2324642974574398,
+    "max_psi_feature": "promised_days",
+    "max_context_psi": 6.806037878143547,
+    "recall_gap_4w": 0.16324381253291204,
+    "recall_gap_fair_4w": 0.09583991574512907
+  },
+  "first_alert_week_by_type": {
+    "drift": "2018-06-04",
+    "fairness": "2018-06-25",
+    "performance": "2018-07-23"
+  },
+  "reference_market_late_rate_14d": 0.1378,
+  "reference_flag_rate_gap": 0.6,
+  "evidently_reports": [
+    {
+      "month": "2018-06",
+      "file": "evidently_2018-06.html",
+      "orders": 6096,
+      "drifted_columns": 8,
+      "drift_share": 0.571
+    },
+    {
+      "month": "2018-07",
+      "file": "evidently_2018-07.html",
+      "orders": 6156,
+      "drifted_columns": 9,
+      "drift_share": 0.643
+    },
+    {
+      "month": "2018-08",
+      "file": "evidently_2018-08.html",
+      "orders": 6351,
+      "drifted_columns": 10,
+      "drift_share": 0.714
+    }
+  ],
+  "thresholds": {
+    "recall": 0.45,
+    "auc": 0.7,
+    "psi": 0.2,
+    "flag_lo": 0.15,
+    "flag_hi": 0.35,
+    "gap": 0.1,
+    "flag_gap_increase": 0.15,
+    "min_late": 30
+  }
+}

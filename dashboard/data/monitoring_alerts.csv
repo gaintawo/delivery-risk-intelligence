@@ -1,0 +1,43 @@
+week,signal,value,rule,action,type
+2018-06-04,Score drift (PSI),1.796,> 0.20,Recalibrate threshold; investigate,drift
+2018-06-04,Feature drift: promised_days,1.08,> 0.20,Investigate data change,drift
+2018-06-04,Flag rate at serving threshold,0.058,outside 0.15-0.35,Recalibrate threshold,drift
+2018-06-11,Score drift (PSI),0.809,> 0.20,Recalibrate threshold; investigate,drift
+2018-06-11,Feature drift: promised_days,0.252,> 0.20,Investigate data change,drift
+2018-06-11,Flag rate at serving threshold,0.102,outside 0.15-0.35,Recalibrate threshold,drift
+2018-06-18,Score drift (PSI),0.676,> 0.20,Recalibrate threshold; investigate,drift
+2018-06-18,Feature drift: promised_days,0.334,> 0.20,Investigate data change,drift
+2018-06-18,Flag rate at serving threshold,0.131,outside 0.15-0.35,Recalibrate threshold,drift
+2018-06-25,Score drift (PSI),0.459,> 0.20,Recalibrate threshold; investigate,drift
+2018-06-25,Feature drift: promised_days,0.209,> 0.20,Investigate data change,drift
+2018-06-25,Regional recall gap (4 weeks),0.41,> 0.10,Fairness incident review (Review Board),fairness
+2018-06-25,Regional flag-rate gap rising (bias drift),0.759,+0.15 vs reference,Fairness incident review,fairness
+2018-07-02,Score drift (PSI),0.313,> 0.20,Recalibrate threshold; investigate,drift
+2018-07-02,Regional flag-rate gap rising (bias drift),0.808,+0.15 vs reference,Fairness incident review,fairness
+2018-07-09,Regional recall gap (4 weeks),0.594,> 0.10,Fairness incident review (Review Board),fairness
+2018-07-16,Feature drift: promised_days,0.206,> 0.20,Investigate data change,drift
+2018-07-16,Regional recall gap (4 weeks),0.597,> 0.10,Fairness incident review (Review Board),fairness
+2018-07-16,Regional flag-rate gap rising (bias drift),0.767,+0.15 vs reference,Fairness incident review,fairness
+2018-07-23,ROC-AUC (4 weeks),0.683,< 0.70,Retrain (src.models.retrain),performance
+2018-07-23,Feature drift: promised_days,0.305,> 0.20,Investigate data change,drift
+2018-07-23,Regional recall gap (4 weeks),0.674,> 0.10,Fairness incident review (Review Board),fairness
+2018-07-30,Recall within capacity (4 weeks),0.374,< 0.45,Analytics review,performance
+2018-07-30,ROC-AUC (4 weeks),0.651,< 0.70,Retrain (src.models.retrain),performance
+2018-07-30,Feature drift: promised_days,0.866,> 0.20,Investigate data change,drift
+2018-07-30,Flag rate at serving threshold,0.381,outside 0.15-0.35,Recalibrate threshold,drift
+2018-07-30,Regional recall gap (4 weeks),0.687,> 0.10,Fairness incident review (Review Board),fairness
+2018-08-06,Recall within capacity (4 weeks),0.337,< 0.45,Analytics review,performance
+2018-08-06,ROC-AUC (4 weeks),0.645,< 0.70,Retrain (src.models.retrain),performance
+2018-08-06,Feature drift: promised_days,0.857,> 0.20,Investigate data change,drift
+2018-08-06,Regional recall gap (4 weeks),0.73,> 0.10,Fairness incident review (Review Board),fairness
+2018-08-13,Recall within capacity (4 weeks),0.33,< 0.45,Analytics review,performance
+2018-08-13,ROC-AUC (4 weeks),0.641,< 0.70,Retrain (src.models.retrain),performance
+2018-08-13,Score drift (PSI),0.368,> 0.20,Recalibrate threshold; investigate,drift
+2018-08-13,Feature drift: promised_days,0.73,> 0.20,Investigate data change,drift
+2018-08-13,Regional recall gap (4 weeks),0.322,> 0.10,Fairness incident review (Review Board),fairness
+2018-08-20,Recall within capacity (4 weeks),0.318,< 0.45,Analytics review,performance
+2018-08-20,ROC-AUC (4 weeks),0.65,< 0.70,Retrain (src.models.retrain),performance
+2018-08-20,Score drift (PSI),0.673,> 0.20,Recalibrate threshold; investigate,drift
+2018-08-20,Feature drift: promised_days,1.232,> 0.20,Investigate data change,drift
+2018-08-20,Flag rate at serving threshold,0.101,outside 0.15-0.35,Recalibrate threshold,drift
+2018-08-20,Regional recall gap (4 weeks),0.163,> 0.10,Fairness incident review (Review Board),fairness

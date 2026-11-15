@@ -1,0 +1,85 @@
+# Delivery Risk Intelligence: the whole system on one machine.
+#
+#   docker compose up --build
+#
+# 1. pipeline   runs once: downloads Olist, cleans, validates (Great Expectations), writes data/processed
+# 2. monitor    runs once after the pipeline: drift, fairness and performance signals + Evidently reports
+# 3. api        FastAPI scoring service           http://localhost:8000/docs
+# 4. dashboard  Streamlit stakeholder dashboard    http://localhost:8501
+# 5. monitoring-site  static monitoring site     http://localhost:8080
+# 6. prometheus scrapes the API's /metrics       http://localhost:9090
+# 7. grafana    live API dashboard               http://localhost:3000  (anonymous viewer)
+#
+# Without the data steps:  docker compose up --build api dashboard prometheus grafana
+name: dri
+
+services:
+  pipeline:
+    build: { context: ., dockerfile: Dockerfile }
+    image: dri-pipeline:local
+    environment:
+      DRI_HASH_SALT: ${DRI_HASH_SALT:-local-dev-salt-change-me}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./docs/evidence:/app/docs/evidence
+    restart: "no"
+
+  monitor:
+    build: { context: ., dockerfile: monitoring/Dockerfile }
+    image: dri-monitor:local
+    depends_on:
+      pipeline: { condition: service_completed_successfully }
+    volumes:
+      - ./data:/app/data:ro
+      - ./build/monitoring_site:/app/build/monitoring_site
+      - ./docs/evidence/monitoring:/app/docs/evidence/monitoring
+      - ./dashboard/data:/app/dashboard/data
+    restart: "no"
+
+  api:
+    build: { context: ., dockerfile: api/Dockerfile }
+    image: dri-api:local
+    ports: ["8000:8000"]
+    volumes:
+      - api-logs:/app/logs          # explanation store (audit trail) survives restarts
+    restart: unless-stopped
+
+  dashboard:
+    build: { context: ., dockerfile: dashboard/Dockerfile }
+    image: dri-dashboard:local
+    ports: ["8501:8501"]
+    restart: unless-stopped
+
+  monitoring-site:
+    image: nginx:1.29-alpine
+    ports: ["8080:80"]
+    volumes:
+      - ./build/monitoring_site:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    ports: ["9090:9090"]
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+    depends_on: [api]
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    ports: ["3000:3000"]
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on: [prometheus]
+    restart: unless-stopped
+
+volumes:
+  api-logs:

@@ -3,6 +3,18 @@
 All notable changes to Delivery Risk Intelligence (DRI) are documented in this file.
 Versions follow semantic versioning (Module 1, Section 6).
 
+## [1.0.0] - November 2026 (Final Project)
+
+### Added
+- Monitoring (`src/monitoring/monitor.py`): weekly performance, drift (PSI) and fairness signals, alerts, Evidently AI reports, static monitoring site deployed to GitHub Pages; dashboard Monitoring page.
+- Automated retraining with promotion gates (`src/models/retrain.py`, `.github/workflows/retrain.yml`).
+- API: explanation store (`GET /explanations/{id}`), Prometheus `/metrics`, expected delivery days, suggested actions (`src/actions/recommend.py`).
+- Docker Compose (pipeline, monitor, API, dashboard, monitoring site, Prometheus, Grafana); CI Compose smoke test; CD workflow (GHCR, Pages, Render).
+- Governance: Ethical AI framework, Algorithmic Impact Assessment, regulatory compliance report, public trust statement, monitoring/incident/decommissioning plan; integration audit; as-built architecture.
+
+### Changed
+- Public dashboard extract coarsened to purchase week and review scores removed (governance reconciliation).
+
 ## [0.5.0] - November 2026 (Module 5, Sprint 5)
 
 ### Added

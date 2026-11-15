@@ -8,8 +8,18 @@ BAN6800 Business Analytics Capstone · Nexford University · Gain Tawodzera
 | --- | --- |
 | Vertical | Logistics, last-mile delivery |
 | Dataset | [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (CC BY-NC-SA 4.0) |
-| Status | Sprint 5 (Module 5): stakeholder dashboard and API demo; model in **shadow mode only** |
-| Live dashboard | **DASHBOARD_URL** (Streamlit Community Cloud) |
+| Status | Final Project: integrated, monitored and governed; model in **shadow mode only** (fails the G1 recall target and the G5 fairness gate) |
+
+## Live system
+
+| What | Link |
+| --- | --- |
+| Live dashboard (Streamlit, incl. XAI and fairness pages) | DASHBOARD_URL |
+| Live API (FastAPI on Render) | API_URL (`/docs` for the interactive page, `POST /predict`, `GET /explanations/{id}`, `/metrics`) |
+| Monitoring dashboard (Evidently AI + Fairlearn, GitHub Pages) | https://gaintawo.github.io/delivery-risk-intelligence/ |
+| CI/CD | [GitHub Actions](https://github.com/gaintawo/delivery-risk-intelligence/actions): CI (lint, tests, pipeline in Docker, Compose smoke test), CD (images to GHCR, monitoring site, Render), monthly retraining |
+| Everything locally | `docker compose up --build` (pipeline, monitor, API, dashboard, monitoring site, Prometheus, Grafana) |
+| Final report material | [Ethical AI framework](docs/governance/ethical_ai_framework.md) · [Integration audit](docs/integration_audit.md) · [Monitoring and incident plan](docs/governance/monitoring_and_incident_plan.md) · [Model card](docs/model_cards/dri_late_classifier_card.md) |
 
 ## Repository structure (from the Module 1 Vision Document)
 
@@ -20,7 +30,7 @@ delivery-risk-intelligence/
 ├── docs/                Vision, data dictionary, RAID log, architecture, backlog
 │   ├── model_cards/     One summary sheet per model version
 │   └── sprint_notes/    Sprint reviews and retrospectives
-├── data/                Tracked with DVC, not Git
+├── data/                Not in Git (fingerprinted in docs/evidence/lineage.json)
 │   ├── raw/             Original Olist files, never edited
 │   └── processed/       Cleaned data ready for modelling
 ├── notebooks/           Step-by-step analysis (01_explore.ipynb, ...)
@@ -29,9 +39,13 @@ delivery-risk-intelligence/
 │   ├── features/        Building model inputs
 │   ├── models/          Training and testing
 │   ├── fairness/        Bias checks
+│   ├── monitoring/      Drift, fairness and performance monitoring
 │   └── actions/         Recommendation logic
-├── api/                 Model serving (FastAPI)
-├── dashboard/           Streamlit dashboard
+├── api/                 Model serving (FastAPI), explanation store, Dockerfile
+├── dashboard/           Streamlit dashboard, Dockerfile, public de-identified extract
+├── monitoring/          Monitoring image, Prometheus, Grafana
+├── docker-compose.yml   The whole system on one machine
+├── render.yaml          Live API deployment
 ├── tests/               Automatic checks
 └── requirements.txt     Software the project needs
 ```
@@ -99,6 +113,19 @@ python -m api.demo --in-process         # score three example orders through POS
 | Transparency | What the model can and cannot do; Ethical AI Charter commitments |
 
 Deployment: Streamlit Community Cloud, main file `dashboard/app.py`, Python 3.13. It installs `dashboard/requirements.txt` and reads only the de-identified file in [dashboard/data](dashboard/data/README.md). Screenshots and the API demo output are in [docs/evidence/dashboard](docs/evidence/dashboard/) and [docs/evidence/api_demo_output.txt](docs/evidence/api_demo_output.txt).
+
+## Monitoring, retraining and governance (Final Project)
+
+```bash
+pip install -r requirements-monitoring.txt
+python -m src.monitoring.monitor     # weekly signals, alerts, Evidently reports -> build/monitoring_site
+python -m src.models.retrain         # monthly retraining with promotion gates (MLflow alias "candidate")
+docker compose up --build            # full stack; Grafana at http://localhost:3000
+```
+
+* Monitoring replay (Jun–Aug 2018): label-free drift alerts fired 7 weeks before the ROC-AUC alert; 42 alerts in 12 weeks ([summary](docs/evidence/monitoring/monitoring_summary.json)).
+* Retraining replay: every candidate passed its gates, but did not stop the August decline (28% vs 32% recall). Retraining is upkeep, not a cure ([results](docs/evidence/retraining/retraining_results.csv)).
+* Governance: [Ethical AI framework](docs/governance/ethical_ai_framework.md), [Algorithmic Impact Assessment](docs/governance/algorithmic_impact_assessment.md), [Regulatory compliance](docs/governance/regulatory_compliance.md), [Public trust statement](docs/governance/public_trust_statement.md), [Monitoring, incident response and decommissioning](docs/governance/monitoring_and_incident_plan.md).
 
 ## Planning documents (Module 2)
 

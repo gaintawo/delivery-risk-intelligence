@@ -42,9 +42,12 @@ def load_model():
 
 @st.cache_data
 def load_orders() -> pd.DataFrame:
-    d = pd.read_csv(DATA / "test_scored.csv.gz", dtype={"example": "string"}, parse_dates=["purchase_date"])
+    d = pd.read_csv(DATA / "test_scored.csv.gz", dtype={"example": "string"}, parse_dates=["purchase_week"])
     d["example"] = d["example"].fillna("")
-    d["month"] = d["purchase_date"].dt.strftime("%b %Y")
+    # calendar month of purchase, from the model input purchase_month (the extract keeps weeks, not dates)
+    year = (d["purchase_week"] + pd.Timedelta(days=6)).dt.year
+    d["month"] = pd.to_datetime(pd.DataFrame({"year": year, "month": d["purchase_month"].astype(int), "day": 1}))\
+        .dt.strftime("%b %Y")
     return d
 
 

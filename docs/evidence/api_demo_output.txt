@@ -1,4 +1,4 @@
-GET /health -> {'status': 'ok', 'model': 'dri-late-delivery-classifier', 'version': 3, 'algorithm': 'Logistic Regression', 'delivery_days_model': True, 'explanations_stored': 61}
+GET /health -> {'status': 'ok', 'model': 'dri-late-delivery-classifier', 'version': 3, 'algorithm': 'Logistic Regression', 'delivery_days_model': True, 'explanations_stored': 8}
 
 === Order A: flagged, arrived late (MA, Northeast; actually late) ===
 POST /predict -> risk 0.71 · band high · flagged True · fairness-adjusted flag True
@@ -26,7 +26,7 @@ POST /predict -> risk 0.40 · band medium · flagged False · fairness-adjusted 
 
 Full response for the last order:
 {
-  "prediction_id": "2cfc0015-4b7d-4fc6-9f12-dbe39f7a3d5a",
+  "prediction_id": "10b7e0a9-bc4d-4105-a553-6e440d241fed",
   "late_probability": 0.4012,
   "flagged": false,
   "flagged_fairness_adjusted": false,
@@ -58,4 +58,4 @@ Full response for the last order:
   "model": "dri-late-delivery-classifier v3 (Logistic Regression)"
 }
 
-GET /explanations/2cfc0015-4b7d-4fc6-9f12-dbe39f7a3d5a -> stored 2026-11-15T15:38:05+00:00 · model dri-late-delivery-classifier v3 (Logistic Regression) · input hash 0dbacbc8fa5f… · score 0.4012
+GET /explanations/10b7e0a9-bc4d-4105-a553-6e440d241fed -> stored 2026-11-15T15:47:56+00:00 · model dri-late-delivery-classifier v3 (Logistic Regression) · input hash 0dbacbc8fa5f… · score 0.4012

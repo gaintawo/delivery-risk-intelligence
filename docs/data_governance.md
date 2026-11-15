@@ -9,6 +9,7 @@ Delivery Risk Intelligence (DRI) · Module 3 · Puts into practice the Module 1 
 | **Restricted – raw** | `data/raw/*` (original Olist files) | Data engineer only; read-only; never committed to Git |
 | **Restricted – model-ready** | `data/processed/orders_model_ready.parquet`, warehouse table `orders_model_ready`, view `v_training_delivered` | Data engineer, analysts (Module 4 modelling), Responsible AI Review Board for audits |
 | **Internal – aggregated** | `data/processed/dashboard_feed.csv` (small cells suppressed) | Delivery operations, seller support, Head of Logistics |
+| **Public – de-identified extract** (added in the Final Project) | `dashboard/data/test_scored.csv.gz`, `test_shap.csv.gz` (test period only, used by the public dashboard) | Anyone with the dashboard link. Allowed because the source is a public dataset and the extract has no keys, postcodes, coordinates, review scores or exact dates (purchase week only); location is state and region |
 | **Internal – evidence** | `docs/evidence/*`, `logs/audit.log` | Project team, Data Protection Officer, Review Board |
 
 ## 2. Access control matrix

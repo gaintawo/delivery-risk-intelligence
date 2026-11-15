@@ -7,7 +7,7 @@ which has no access to the warehouse, so it reads a small, de-identified copy
 of the held-out test period (June-August 2018) scored by the Module 4 champion:
 
 * no order, customer or seller keys (privacy plan, ER4);
-* location only as state and region;
+* location only as state and region; purchase week, not date; no review scores;
 * Olist data is CC BY-NC-SA 4.0, so the copy keeps that licence.
 """
 from __future__ import annotations
@@ -40,10 +40,10 @@ def main() -> None:
     fair = post.predict(te[FEATURES], sensitive_features=te["customer_region"], random_state=0)
 
     out = te[FEATURES].copy()
-    out.insert(0, "purchase_date", pd.to_datetime(te[TIME_COL]).dt.date.astype(str))
+    # Week, not exact date: lowers the chance of singling out an order (governance class "public extract")
+    out.insert(0, "purchase_week", pd.to_datetime(te[TIME_COL]).dt.to_period("W-SUN").dt.start_time.dt.date.astype(str))
     out["is_late"] = te[TARGET].astype(int)
     out["delivery_days"] = te["delivery_days"].round(1)
-    out["review_score"] = te["review_score"]
     out["risk_score"] = score.round(5)
     out["flagged"] = flag
     out["flagged_fair"] = np.asarray(fair).astype(int)

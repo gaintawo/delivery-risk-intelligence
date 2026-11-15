@@ -93,3 +93,22 @@ Predictions will support operational decisions rather than automatically penalis
 ### 7. Implementation Status
 
 This document describes the planned architecture for the BAN6800 academic project. The technologies and integrations listed are proposed components and will be implemented and validated progressively during subsequent project modules.
+
+### 7. As-built architecture (Final Project)
+
+The proposal above is kept as planned in Module 2. This section records what was actually built; differences are reconciled in the [integration audit](integration_audit.md).
+
+![As-built architecture](diagrams/architecture_as_built.png)
+
+| Planned (Module 2) | Built | Why |
+| --- | --- | --- |
+| Google Cloud Storage, PostgreSQL | Parquet + SQLite by default; PostgreSQL through `DATABASE_URL` | Public data, small (135 MB) |
+| dbt models | pandas transforms + SQL view `v_training_delivered` | One source, few models; dbt would add little |
+| DVC | SHA-256 fingerprints in `lineage.json` and the audit log | Fixed public dataset |
+| FastAPI on Cloud Run | FastAPI container on Render (`render.yaml`), images on GHCR | Free tier, same container |
+| Streamlit or Power BI | Streamlit Community Cloud | Interactive what-if and fairness views |
+| Monitoring charts | `src/monitoring/monitor.py` (Evidently AI + Fairlearn) on GitHub Pages; Prometheus + Grafana for the live API | Outcome-based and live signals |
+| Recommendation engine | `src/actions/recommend.py` (rule-based, support-only) | Transparent until a trial measures effects |
+| Two scoring points | Purchase-time only | Hand-over model is a next step |
+
+Run everything locally: `docker compose up --build`.

@@ -1,0 +1,29 @@
+flowchart LR
+  subgraph DATA["Data pipeline (Module 3) · Prefect · Docker"]
+    A["Olist public data<br/>9 CSV files"] --> B["Ingest · clean · integrate"]
+    B --> C["Features<br/>(known at purchase only)"]
+    C --> D["Pseudonymise<br/>salted SHA-256"]
+    D --> E{"Great Expectations<br/>35 checks"}
+    E -- pass --> F["Bias check<br/>Fairlearn"]
+    E -- fail --> X["Stop"]
+    F --> G[("Model-ready table<br/>parquet + SQL view")]
+  end
+  subgraph MODEL["Model (Module 4) · MLflow"]
+    G --> H["Train + tune<br/>LR · RF · XGBoost"]
+    H --> I["SHAP · DiCE · Fairlearn<br/>Model card"]
+    I --> J[("MLflow registry<br/>champion v3")]
+    K["Monthly retraining<br/>with gates"] --> J
+  end
+  subgraph SERVE["Serve (Modules 4–5, Final)"]
+    J --> L["FastAPI /predict<br/>reasons · actions"]
+    L --> M[("Explanation store<br/>audit trail")]
+    J --> N["Streamlit dashboard<br/>XAI · what-if · fairness"]
+  end
+  subgraph MON["Monitor (Final)"]
+    L --> P["Prometheus · Grafana<br/>live service"]
+    G --> Q["Weekly monitor<br/>drift · fairness · Evidently"]
+    Q --> R["Monitoring site<br/>GitHub Pages"]
+    Q -. alerts .-> K
+  end
+  N --> S["Delivery ops · seller support<br/>customer service · Review Board"]
+  R --> S
